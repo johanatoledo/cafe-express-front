@@ -10,60 +10,64 @@ export default function ProductCard({
   const estaEnCarrito = cantidad > 0;
 
   return (
-    <article className="group overflow-hidden rounded-3xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-      <div className="relative h-52 w-full overflow-hidden">
-        <Image
-          src={producto.imagen}
-          alt={producto.nombre}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-      </div>
+    <article className="group cafe-product-card cafe-fade-in">
+  <div className="relative h-60 w-full overflow-hidden">
+    <Image
+      src={producto.imagen}
+      alt={producto.nombre}
+      fill
+      className="object-cover transition-transform duration-700 group-hover:scale-110"
+      sizes="(max-width: 768px) 100vw,
+             (max-width: 1200px) 50vw,
+             25vw"
+    />
 
-      <div className="p-5">
-        <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">
-          {producto.categoria}
-        </span>
+    <div className="cafe-product-image-overlay" />
+  </div>
 
-        <h3 className="mt-3 text-xl font-black text-gray-900">
-          {producto.nombre}
-        </h3>
+  <div className="p-5">
+    <span className="cafe-product-category">
+      {producto.categoria}
+    </span>
 
-        <p className="mt-2 min-h-12 text-sm leading-relaxed text-gray-600">
-          {producto.descripcion}
-        </p>
+    <h3 className="mt-4 cafe-title text-xl">
+      {producto.nombre}
+    </h3>
 
-        <div className="mt-5 flex items-center justify-between">
-          <p className="text-2xl font-black text-red-700">
-            S/ {producto.precio.toFixed(2)}
-          </p>
+    <p className="mt-3 min-h-14 text-sm leading-relaxed text-gray-600">
+      {producto.descripcion}
+    </p>
 
-          {estaEnCarrito ? (
-            <button
-              onClick={() => onEliminar(producto.id)}
-              className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm font-bold text-white hover:bg-red-700"
-            >
-              <Trash2 size={16} />
-              Eliminar
-            </button>
-          ) : (
-            <button
-              onClick={() => onAgregar(producto)}
-              className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800"
-            >
-              <Plus size={16} />
-              Pedir
-            </button>
-          )}
-        </div>
+    <div className="mt-2 flex items-center justify-between gap-3">
+      <p className="cafe-product-price">
+        S/ {producto.precio.toFixed(2)}
+      </p>
 
-        {cantidad > 0 && (
-          <p className="mt-3 text-sm font-bold text-green-700">
-            Agregado: {cantidad}
-          </p>
-        )}
-      </div>
-    </article>
+      {estaEnCarrito ? (
+        <button
+          onClick={() => onEliminar(producto.id)}
+          className="cafe-button-remove"
+        >
+          <Trash2 size={14} />
+          Eliminar
+        </button>
+      ) : (
+        <button
+          onClick={() => onAgregar(producto)}
+          className="cafe-button-add"
+        >
+          <Plus size={14} />
+          Pedir
+        </button>
+      )}
+    </div>
+
+    {cantidad > 0 && (
+      <p className="mt-4 text-sm font-black text-green-700">
+        Agregado: {cantidad}
+      </p>
+    )}
+  </div>
+</article>
   );
 }

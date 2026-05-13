@@ -1,66 +1,134 @@
 export const productos = [
   {
     id: 1,
-    nombre: "Lomo Saltado",
-    descripcion: "Carne salteada con cebolla, tomate, papas fritas y arroz.",
-    precio: 18,
-    categoria: "Plato",
-    imagen: "/platos/lomo-saltado.jpg",
+    nombre: "Café Pasado de Origen",
+    descripcion:
+      "Goteo artesanal con granos de Chanchamayo, notas de chocolate y frutos secos.",
+    precio: 8.5,
+    categoria: "Bebidas-calientes",
+    imagen: "/bebidas/cafe-pasado.png",
   },
   {
     id: 2,
-    nombre: "Arroz Chaufa",
-    descripcion: "Arroz estilo chifa con pollo, huevo, sillao y cebolla china.",
-    precio: 14,
-    categoria: "Plato",
-    imagen: "/platos/arroz-chaufa.jpg",
+    nombre: "Capuccino con Cacao Amazónico",
+    descripcion:
+      "Espresso balanceado con leche vaporizada y un toque de cacao orgánico al 70%.",
+    precio: 12.0,
+    categoria: "Bebidas-calientes",
+    imagen: "/bebidas/capuccino-cacao.png",
   },
   {
     id: 3,
-    nombre: "Mostrito",
-    descripcion: "Pollo broaster con arroz chaufa, papas fritas y cremas.",
-    precio: 16,
-    categoria: "Plato",
-    imagen: "/platos/mostrito.webp",
+    nombre: "Té de Muña y Menta",
+    descripcion:
+      "Infusión digestiva de hojas frescas de los Andes.",
+    precio: 7.0,
+    categoria: "Bebidas-calientes",
+    imagen: "/bebidas/te-muna.png",
   },
   {
     id: 4,
-    nombre: "Pollo a la Brasa",
-    descripcion: "Pollo a la brasa con papas fritas, ensalada y cremas.",
-    precio: 20,
-    categoria: "Plato",
-    imagen: "/platos/pollo-brasa.png",
+    nombre: "Iced Latte de Lúcuma",
+    descripcion:
+      "Espresso con leche fría y jarabe artesanal de lúcuma de seda.",
+    precio: 15.5,
+    categoria: "Bebidas-frias",
+    imagen: "/bebidas/iced-latte-lucuma.png",
   },
   {
     id: 5,
-    nombre: "Caldo de Gallina",
-    descripcion: "Caldo caliente con presa de gallina, fideos y huevo.",
-    precio: 15,
-    categoria: "Plato",
-    imagen: "/platos/caldo-gallina.webp",
+    nombre: "Jugo de Maracuyá y Hierba Luisa",
+    descripcion:
+      "Refrescante combinación cítrica y aromática, ideal para la tarde.",
+    precio: 10.0,
+    categoria: "Bebidas-frias",
+    imagen: "/bebidas/jugo-maracuya.png",
   },
+
+  // ===== POSTRES =====
+
   {
     id: 6,
-    nombre: "Chicha Morada",
-    descripcion: "Bebida natural de maíz morado.",
-    precio: 5,
-    categoria: "Bebida",
-    imagen: "/bebidas/chicha.webp",
+    nombre: "Alfajores de Maicena (Porción x3)",
+    descripcion:
+      "Rellenos de abundante manjar blanco de olla y azúcar finamente espolvoreada.",
+    precio: 5.0,
+    categoria: "Postres",
+    imagen: "/postres/alfajores.png",
   },
   {
     id: 7,
-    nombre: "Maracuyá",
-    descripcion: "Refresco natural de maracuyá.",
-    precio: 5,
-    categoria: "Bebida",
-    imagen: "/bebidas/maracuya.jpg",
+    nombre: "Torta de Chocolate de la Casa",
+    descripcion:
+      "Bizcocho húmedo de cacao al 60% con doble capa de fudge artesanal.",
+    precio: 14.0,
+    categoria: "Postres",
+    imagen: "/postres/torta-chocolate.png",
   },
   {
     id: 8,
-    nombre: "Gaseosa",
-    descripcion: "Gaseosa personal helada.",
-    precio: 4,
-    categoria: "Bebida",
-    imagen: "/bebidas/gaseosa.webp",
+    nombre: "Suspiro a la Limeña Tradicional",
+    descripcion:
+      "Crema de yemas y leche con merengue al oporto y canela.",
+    precio: 13.5,
+    categoria: "Postres",
+    imagen: "/postres/suspiro.png",
+  },
+  {
+    id: 9,
+    nombre: "Pie de Limón de Pica",
+    descripcion:
+      "Base crocante de mantequilla con crema ácida de limón y merengue suizo.",
+    precio: 11.0,
+    categoria: "Postres",
+    imagen: "/postres/pie-limon.png",
+  },
+
+  // ===== SANDWICHES =====
+
+  {
+    id: 10,
+    nombre: "Sándwich de Chicharrón Criollo",
+    descripcion:
+      "Pan francés crocante con chicharrón de cerdo, camote frito y salsa criolla.",
+    precio: 16.0,
+    categoria: "Sandwiches",
+    imagen: "/sandwich/chicharron.png",
+  },
+  {
+    id: 11,
+    nombre: "Pan con Pollo Deshilachado",
+    descripcion:
+      "Pechuga de pollo cocida lentamente con mayonesa casera y apio fresco.",
+    precio: 14.5,
+    categoria: "Sandwiches",
+    imagen: "/sandwich/pan-pollo.png",
+  },
+  {
+    id: 12,
+    nombre: "Sánguche de Asado",
+    descripcion:
+      "Láminas de asado jugoso en pan ciabatta con salsa de la casa.",
+    precio: 18.0,
+    categoria: "Sandwiches",
+    imagen: "/sandwich/asado.png",
+  },
+  {
+    id: 13,
+    nombre: "Triple Clásico Limeño",
+    descripcion:
+      "Capas de palta, huevo, tomate y pollo en pan de molde artesanal.",
+    precio: 13.5,
+    categoria: "Sandwiches",
+    imagen: "/sandwich/triple.png",
+  },
+  {
+    id: 14,
+    nombre: "Pan con Pavo Ahumado",
+    descripcion:
+      "Pavo ahumado artesanal con queso fresco y hojas crocantes.",
+    precio: 17.0,
+    categoria: "Sandwiches",
+    imagen: "/sandwich/pavo.png",
   },
 ];

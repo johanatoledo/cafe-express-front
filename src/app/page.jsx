@@ -82,33 +82,36 @@ export default function HomeMenuPage() {
 
       <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <div className="text-center">
-          <h1 className="mt-5 text-3xl font-black tracking-tight text-pedido-dark sm:text-4xl md:text-5xl">
-            Nuestro Menú
+          <h1 className="cafe-title text-5xl">
+            NUESTRA CARTA
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-pedido-dark sm:text-base">
-            Elige tus platos favoritos, paga con Yape y
-            recoge tu pedido rápidamente.
+              Café recién preparado,postres y sandwiches listos para llevar.
           </p>
         </div>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3">
-          {categorias.map((categoria) => (
-            <button
-              key={categoria}
-              onClick={() => setCategoriaActiva(categoria)}
-              className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-wide transition-all sm:px-5 sm:text-sm ${
-                categoriaActiva === categoria
-                  ? "bg-pedido-red text-pedido-white shadow-lg"
-                  : "bg-white text-pedido-dark ring-1 ring-gray-200 hover:bg-pedido-red2-50"
-              }`}
-            >
-              {categoria}
-            </button>
-          ))}
-        </div>
+       <div className="mt-8 flex flex-wrap justify-center gap-3">
+           {categorias.map((categoria) => {
+            const activa = categoriaActiva === categoria;
 
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+             return (
+              <button
+               key={categoria}
+               onClick={() => setCategoriaActiva(categoria)}
+               className={`cafe-category-button ${
+               activa
+               ? "cafe-category-button-active"
+               : "cafe-category-button-inactive"
+             }`}
+          >
+            {categoria}
+         </button>
+        );
+      })}
+     </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {productosFiltrados.map((producto) => (
             <ProductCard
               key={producto.id}
