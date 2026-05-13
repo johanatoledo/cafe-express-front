@@ -413,7 +413,7 @@ select {
 }
 
 .cafe-subtitle {
-  color: #6b7280;
+  color: var(--color-cafe-oscuro);
   line-height: 1.7;
 }
 .cafe-precio{

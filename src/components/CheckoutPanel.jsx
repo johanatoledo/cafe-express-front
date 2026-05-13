@@ -92,9 +92,9 @@ export default function CheckoutPanel({
 
   return (
   <div className="fixed inset-0 z-[100] bg-black/50 px-4 py-6 backdrop-blur-sm">
-    <div className="mx-auto flex max-h-[90vh] max-w-xl flex-col overflow-hidden rounded-3xl bg-pedido-white shadow-2xl">
+    <div className="mx-auto flex max-h-[90vh] max-w-xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
       <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-pedido-white px-6 py-5">
-        <h2 className="text-2xl font-black text-pedido-red">
+        <h2 className="text-2xl font-black cafe-title">
           CONFIRMAR PEDIDO
         </h2>
 
@@ -110,26 +110,26 @@ export default function CheckoutPanel({
         <div className="mt-6 overflow-hidden rounded-3xl bg-purple-900 p-6 shadow-lg ring-1 ring-purple-200">
           <div className="flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="text-center lg:text-left">
-              <span className="rounded-full bg-green-400 px-4 py-2 text-xs font-black uppercase tracking-wide text-pedido-white">
+              <span className="rounded-full bg-green-300 px-4 py-2 text-xs font-black uppercase tracking-wide text-pedido-white">
                 Paga rápido con Yape
               </span>
 
-              <p className="mt-4 text-xl font-black text-pedido-white">
+              <p className="mt-4 text-xl font-black text-white">
                 Escanea el QR
               </p>
 
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-pedido-white">
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-white">
                 Realiza el pago desde tu aplicación Yape y luego coloca el ID de
                 operación para confirmar automáticamente tu pedido.
               </p>
 
               <div className="mt-5">
-                <p className="text-xl font-black uppercase tracking-wider text-pedido-white">
+                <p className="text-xl font-black uppercase tracking-wider text-white">
                   Número 
                 </p>
 
-                <p className="mt-1 text-2xl font-black text-pedido-white">
-                  999 999 999
+                <p className="mt-1 text-2xl font-black text-white">
+                  929 943 978
                 </p>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function CheckoutPanel({
 
         <div className="mt-6">
           <label className="text-sm font-black text-pedido-gray">
-            Nombre del cliente <span className="text-pedido-red">*</span>
+            Nombre del cliente <span className="text-red-700">*</span>
           </label>
 
           <input
@@ -175,13 +175,13 @@ export default function CheckoutPanel({
             value={clienteNombre}
             onChange={(e) => setClienteNombre(e.target.value)}
             placeholder="Ejemplo: María López"
-            className="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 outline-none focus:border-red-700"
+            className="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 outline-none cafe-input"
           />
         </div>
 
         <div className="mt-5">
-          <label className="text-sm font-black text-gray-700">
-            ID de operación Yape <span className="text-pedido-red">*</span>
+          <label className="text-sm font-black cafe-subtitle">
+            ID de operación Yape <span className="text-red-700">*</span>
           </label>
 
           <input
@@ -202,7 +202,7 @@ export default function CheckoutPanel({
         <button
           onClick={confirmarPedido}
           disabled={cargando}
-          className="rounded-2xl bg-red-700 px-6 py-3 font-black text-white hover:bg-red-800 disabled:bg-gray-400"
+          className="cafe-button-cart"
         >
           {cargando ? "Enviando..." : "Confirmar"}
         </button>
