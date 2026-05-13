@@ -14,7 +14,7 @@ export default function CartBar({ carrito, onOpenCheckout }) {
     <div className="fixed bottom-5 left-1/2 z-50 w-[92%] max-w-2xl -translate-x-1/2 rounded-3xl bg-white p-5 shadow-2xl ring-1 ring-red-100">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="rounded-2xl bg-red-100 p-3 text-red-700">
+          <div className="cafe-icon-cart">
             <ShoppingCart size={24} />
           </div>
 
@@ -30,7 +30,7 @@ export default function CartBar({ carrito, onOpenCheckout }) {
 
         <button
           onClick={onOpenCheckout}
-          className="rounded-2xl bg-red-700 px-5 py-3 text-sm font-black text-white hover:bg-red-800"
+          className="cafe-button-cart"
         >
           Pagar pedido
         </button>

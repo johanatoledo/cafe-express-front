@@ -85,6 +85,10 @@ select {
   background: var(--color-cafe-caramelo);
   color: white;
 }
+.cafe-container {
+  width: min(100% - 1.5rem, 1320px);
+  margin-inline: auto;
+}
 /* ===== ESTILOS PARA BOTONES DE LAS CATEGORIAS ===== */
 .cafe-category-button-container {
   color:var(--color-cafe-oscuro);
@@ -275,12 +279,49 @@ select {
   background: #7f1d1d;
 }
 
-/* ===== UTILIDADES ===== */
+/* ===== ESTILOS CARRITO ===== */
+.cafe-icon-cart{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-.cafe-container {
-  width: min(100% - 1.5rem, 1320px);
-  margin-inline: auto;
+  border-radius: 999px;
+  background: rgb(201 123 54 / 0.12);
+  padding: 0.45rem 0.9rem;
+  color: var(--color-cafe-caramelo);
 }
+
+.cafe-button-cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: 1rem;
+
+  background: var(--color-cafe-espresso);
+
+  padding: 0.8rem 1rem;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+
+  color: white;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.cafe-button-cart:hover {
+  transform: translateY(-2px);
+
+  background: var(--color-cafe-chocolate);
+
+  box-shadow:
+    0 12px 24px rgb(92 61 46 / 0.18);
+}
+/* ===== UTILIDADES ===== */
 
 @media (min-width: 768px) {
   .cafe-container {

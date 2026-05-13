@@ -17,9 +17,7 @@ export default function ProductCard({
       alt={producto.nombre}
       fill
       className="object-cover transition-transform duration-700 group-hover:scale-110"
-      sizes="(max-width: 768px) 100vw,
-             (max-width: 1200px) 50vw,
-             25vw"
+      sizes="(max-width: 768px) 100vw,(max-width: 1200px) 50vw,25vw"
     />
 
     <div className="cafe-product-image-overlay" />
