@@ -8,8 +8,8 @@ export default function Navbar() {
           <Image
              src="/branding/logo.png"
              alt="Café Express"
-             width={65}
-             height={65}
+             width={100}
+             height={100}
              className="object-contain"
           />
         </Link>
