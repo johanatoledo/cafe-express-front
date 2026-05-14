@@ -41,7 +41,7 @@ export default function AdminPedidosPage() {
   };
 
   return (
-    <main className="min-h-screen bg-pedido-cream">
+    <main className="min-h-screen bg-cafe-crema">
       <Navbar />
 
       <section className="mx-auto max-w-7xl px-6 py-10">
@@ -54,7 +54,7 @@ export default function AdminPedidosPage() {
 
           <button
             onClick={cargarPedidos}
-            className="rounded-2xl bg-pedido-red px-5 py-3 font-black text-pedido-white hover:bg-pedido-green"
+            className="cafe-button-add"
           >
             Actualizar
           </button>

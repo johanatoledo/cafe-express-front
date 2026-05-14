@@ -37,7 +37,7 @@ export default function AdminPedidosTable({ pedidos, onEntregar }) {
     <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px] border-collapse">
-          <thead className="bg-red-700 text-white">
+          <thead className="bg-cafe-caramelo text-white">
             <tr>
               <th className="p-4 text-left">Id Pedido</th>
               <th className="p-4 text-left">Cliente</th>
