@@ -17,34 +17,35 @@ export default function CheckoutPanel({
   const [clienteNombre, setClienteNombre] = useState("");
   const [yapeOperacion, setYapeOperacion] = useState("");
   const [cargando, setCargando] = useState(false);
-  const [mensajeError, setMensajeError] = useState("");
+  const [nombreError, setNombreError] = useState("");
+  const [yapeError, setYapeError] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
 
   const confirmarPedido = async () => {
-  setMensajeError("");
+  setNombreError("");
+  setYapeError("");
   setMensajeExito("");
 
   const nombreLimpio = clienteNombre.trim();
   const operacionLimpia = yapeOperacion.trim();
   const totalPedido = Number(total);
 
-  if (!nombreLimpio) {
-    setMensajeError("Ingresa tu nombre para identificar tu pedido.");
-    return;
-  }
 
-  if (!operacionLimpia) {
-    setMensajeError("Ingresa el ID de operación de Yape.");
-    return;
+  let hayError = false;
+  if (!nombreLimpio) {
+    setNombreError("Ingresa tu nombre para identificar tu pedido.");
+    hayError = true;
   }
+  if (!operacionLimpia) {
+    setYapeError("Ingresa el ID de operación de Yape.");
+    hayError = true;
+  }
+  if (hayError) return;
 
   if (itemsPedido.length === 0) {
-    setMensajeError("Agrega productos antes de confirmar el pedido.");
     return;
   }
-
   if (!totalPedido || totalPedido <= 0) {
-    setMensajeError("El total del pedido no es válido.");
     return;
   }
 
@@ -80,11 +81,7 @@ export default function CheckoutPanel({
     router.push(`/pedido/${respuesta.pedidoId}`);
   } catch (error) {
     console.error("Error al crear pedido:", error);
-
-    setMensajeError(
-      error.message ||
-        "No pudimos registrar tu pedido. Verifica tu conexión e inténtalo nuevamente."
-    );
+    // Podrías mostrar un error general si lo deseas, pero según la indicación, solo errores de inputs
   } finally {
     setCargando(false);
   }
@@ -169,28 +166,37 @@ export default function CheckoutPanel({
           <label className="text-sm font-black text-pedido-gray">
             Nombre del cliente <span className="text-red-700">*</span>
           </label>
-
           <input
             type="text"
             value={clienteNombre}
-            onChange={(e) => setClienteNombre(e.target.value)}
+            onChange={(e) => {
+              setClienteNombre(e.target.value);
+              if (nombreError) setNombreError("");
+            }}
             placeholder="Ejemplo: María López"
             className="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 outline-none cafe-input"
           />
+          {nombreError && (
+            <div className="mt-2 text-xs text-red-700 font-bold">{nombreError}</div>
+          )}
         </div>
-
         <div className="mt-5">
           <label className="text-sm font-black cafe-subtitle">
             ID de operación Yape <span className="text-red-700">*</span>
           </label>
-
           <input
             type="text"
             value={yapeOperacion}
-            onChange={(e) => setYapeOperacion(e.target.value)}
+            onChange={(e) => {
+              setYapeOperacion(e.target.value);
+              if (yapeError) setYapeError("");
+            }}
             placeholder="Ejemplo: 84592136"
             className="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 outline-none focus:border-red-700"
           />
+          {yapeError && (
+            <div className="mt-2 text-xs text-red-700 font-bold">{yapeError}</div>
+          )}
         </div>
       </div>
 
@@ -206,11 +212,7 @@ export default function CheckoutPanel({
         >
           {cargando ? "Enviando..." : "Confirmar"}
         </button>
-        {mensajeError && (
-         <div className="mt-4 rounded-2xl border border-red-200 border-none px-2 py-3 text-sm text-center font-bold text-red-700">
-          * {mensajeError}
-         </div>
-         )}
+        {/* Errores específicos de inputs ahora se muestran debajo de cada input */}
 
         {mensajeExito && (
          <div className="mt-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-bold text-green-700">

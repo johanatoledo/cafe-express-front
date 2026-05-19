@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 import path from "path";
 
-const urlMenu = "https://pedido.tonav-tech.online";
+const urlMenu = "https://cafe-express.tonav-tech.online";
 
 const outputPath = path.join(process.cwd(), "public", "qr-menu.png");
 
