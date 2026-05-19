@@ -36,11 +36,11 @@ export default function PedidoDetallePage() {
     // 2. Configuramos el intervalo para el seguimiento en tiempo real
     const intervalo = setInterval(() => {
       cargarPedido();
-    }, 10000); // 10 segundos es ideal para no saturar el servidor
+    }, 10000); 
 
     // 3. Limpieza: Importante para evitar fugas de memoria
     return () => clearInterval(intervalo);
-  }, [id]); // El efecto se reinicia si el ID cambia
+  }, [id]); 
 
  
 

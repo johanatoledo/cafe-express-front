@@ -133,7 +133,7 @@ export default function CheckoutPanel({
 
             <div className="relative flex h-56 w-56 shrink-0 items-center justify-center overflow-hidden rounded-3xl bg-pedido-white p-2 shadow-2xl ring-1 ring-purple-200">
               <Image
-                src="/branding/yape-qr.jpg"
+                src="/branding/yape-qr.webp"
                 alt="QR Yape Chifa Express"
                 fill
                 sizes="224px"

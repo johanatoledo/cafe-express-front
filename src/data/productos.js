@@ -6,7 +6,7 @@ export const productos = [
       "Goteo artesanal con granos de Chanchamayo, notas de chocolate y frutos secos.",
     precio: 8.5,
     categoria: "Bebidas-calientes",
-    imagen: "/bebidas/cafe-pasado.png",
+    imagen: "/bebidas/cafe-pasado.webp",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const productos = [
       "Espresso balanceado con leche vaporizada y un toque de cacao orgánico al 70%.",
     precio: 12.0,
     categoria: "Bebidas-calientes",
-    imagen: "/bebidas/capuccino-cacao.png",
+    imagen: "/bebidas/capuccino-cacao.webp",
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const productos = [
       "Infusión digestiva de hojas frescas de los Andes.",
     precio: 7.0,
     categoria: "Bebidas-calientes",
-    imagen: "/bebidas/te-muna.png",
+    imagen: "/bebidas/te-muna.webp",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const productos = [
       "Espresso con leche fría y jarabe artesanal de lúcuma de seda.",
     precio: 15.5,
     categoria: "Bebidas-frias",
-    imagen: "/bebidas/iced-latte-lucuma.png",
+    imagen: "/bebidas/iced-latte-lucuma.webp",
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ export const productos = [
       "Refrescante combinación cítrica y aromática, ideal para la tarde.",
     precio: 10.0,
     categoria: "Bebidas-frias",
-    imagen: "/bebidas/jugo-maracuya.png",
+    imagen: "/bebidas/jugo-maracuya.webp",
   },
 
   // ===== POSTRES =====
@@ -54,7 +54,7 @@ export const productos = [
       "Rellenos de abundante manjar blanco de olla y azúcar finamente espolvoreada.",
     precio: 5.0,
     categoria: "Postres",
-    imagen: "/postres/alfajores.png",
+    imagen: "/postres/alfajores.webp",
   },
   {
     id: 7,
@@ -63,7 +63,7 @@ export const productos = [
       "Bizcocho húmedo de cacao al 60% con doble capa de fudge artesanal.",
     precio: 14.0,
     categoria: "Postres",
-    imagen: "/postres/torta-chocolate.png",
+    imagen: "/postres/torta-chocolate.webp",
   },
   {
     id: 8,
@@ -72,7 +72,7 @@ export const productos = [
       "Crema de yemas y leche con merengue al oporto y canela.",
     precio: 13.5,
     categoria: "Postres",
-    imagen: "/postres/suspiro.png",
+    imagen: "/postres/suspiro.webp",
   },
   {
     id: 9,
@@ -81,7 +81,7 @@ export const productos = [
       "Base crocante de mantequilla con crema ácida de limón y merengue suizo.",
     precio: 11.0,
     categoria: "Postres",
-    imagen: "/postres/pie-limon.png",
+    imagen: "/postres/pie-limon.webp",
   },
 
   // ===== SANDWICHES =====
@@ -93,7 +93,7 @@ export const productos = [
       "Pan francés crocante con chicharrón de cerdo, camote frito y salsa criolla.",
     precio: 16.0,
     categoria: "Sandwiches",
-    imagen: "/sandwich/chicharron.png",
+    imagen: "/sandwich/chicharron.webp",
   },
   {
     id: 11,
@@ -102,7 +102,7 @@ export const productos = [
       "Pechuga de pollo cocida lentamente con mayonesa casera y apio fresco.",
     precio: 14.5,
     categoria: "Sandwiches",
-    imagen: "/sandwich/pan-pollo.png",
+    imagen: "/sandwich/pan-pollo.webp",
   },
   {
     id: 12,
@@ -111,7 +111,7 @@ export const productos = [
       "Láminas de asado jugoso en pan ciabatta con salsa de la casa.",
     precio: 18.0,
     categoria: "Sandwiches",
-    imagen: "/sandwich/asado.png",
+    imagen: "/sandwich/asado.webp",
   },
   {
     id: 13,
@@ -120,7 +120,7 @@ export const productos = [
       "Capas de palta, huevo, tomate y pollo en pan de molde artesanal.",
     precio: 13.5,
     categoria: "Sandwiches",
-    imagen: "/sandwich/triple.png",
+    imagen: "/sandwich/triple.webp",
   },
   {
     id: 14,
@@ -129,6 +129,6 @@ export const productos = [
       "Pavo ahumado artesanal con queso fresco y hojas crocantes.",
     precio: 17.0,
     categoria: "Sandwiches",
-    imagen: "/sandwich/pavo.png",
+    imagen: "/sandwich/pavo.webp",
   },
 ];

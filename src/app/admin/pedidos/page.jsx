@@ -36,10 +36,12 @@ export default function AdminPedidosPage() {
       await marcarPedidoEntregado(id);
       setPedidos((prev) => prev.filter((pedido) => pedido.id !== id));
     } catch (error) {
-      alert("No se pudo marcar como entregado");
+      console.error("Error al entregar pedido:", error);
+      return 'No se pudo marcar como entregado. Inténtalo de nuevo.';
     }
   };
 
+  
   return (
     <main className="min-h-screen bg-cafe-crema">
       <Navbar />
