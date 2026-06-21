@@ -6,6 +6,8 @@ import AdminPedidosTable from "@/components/AdminPedidosTable";
 import {
   marcarPedidoEntregado,
   obtenerPedidosAdmin,
+  confirmarPagoPedido,
+  asignarUbicacionPedido,
 } from "@/services/pedidoService";
 
 export default function AdminPedidosPage() {
@@ -15,9 +17,9 @@ export default function AdminPedidosPage() {
   const cargarPedidos = async () => {
     try {
       const data = await obtenerPedidosAdmin();
-      setPedidos(data);
+      setPedidos(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error(error);
+      console.error("Error al cargar pedidos:", error);
     } finally {
       setCargando(false);
     }
@@ -34,14 +36,54 @@ export default function AdminPedidosPage() {
   const entregarPedido = async (id) => {
     try {
       await marcarPedidoEntregado(id);
-      setPedidos((prev) => prev.filter((pedido) => pedido.id !== id));
+
+      setPedidos((prev) =>
+        prev.filter((pedido) => pedido.id !== id)
+      );
     } catch (error) {
       console.error("Error al entregar pedido:", error);
-      return 'No se pudo marcar como entregado. Inténtalo de nuevo.';
     }
   };
 
-  
+  const confirmarPago = async (id) => {
+    try {
+      await confirmarPagoPedido(id);
+
+      setPedidos((prev) =>
+        prev.map((pedido) =>
+          pedido.id === id
+            ? { ...pedido, pago_verificado: true }
+            : pedido
+        )
+      );
+    } catch (error) {
+      console.error("Error al confirmar pago:", error);
+    }
+  };
+
+  const asignarUbicacion = async (id, ubicacion) => {
+    const ubicacionLimpia = ubicacion.trim();
+
+    if (!ubicacionLimpia) {
+      alert("Ingresa una ubicación válida.");
+      return;
+    }
+
+    try {
+      await asignarUbicacionPedido(id, ubicacionLimpia);
+
+      setPedidos((prev) =>
+        prev.map((pedido) =>
+          pedido.id === id
+            ? { ...pedido, ubicacion: ubicacionLimpia }
+            : pedido
+        )
+      );
+    } catch (error) {
+      console.error("Error al asignar ubicación:", error);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-cafe-crema">
       <Navbar />
@@ -49,15 +91,12 @@ export default function AdminPedidosPage() {
       <section className="mx-auto max-w-7xl px-6 py-10">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-4xl font-black text-pedido-dark ">
+            <h1 className="text-4xl font-black text-pedido-dark">
               Panel de pedidos
             </h1>
           </div>
 
-          <button
-            onClick={cargarPedidos}
-            className="cafe-button-add"
-          >
+          <button onClick={cargarPedidos} className="cafe-button-add">
             Actualizar
           </button>
         </div>
@@ -65,7 +104,12 @@ export default function AdminPedidosPage() {
         {cargando ? (
           <p className="text-center font-black">Cargando pedidos...</p>
         ) : (
-          <AdminPedidosTable pedidos={pedidos} onEntregar={entregarPedido} />
+          <AdminPedidosTable
+            pedidos={pedidos}
+            onEntregar={entregarPedido}
+            onConfirmarPago={confirmarPago}
+            onAsignarUbicacion={asignarUbicacion}
+          />
         )}
       </section>
     </main>

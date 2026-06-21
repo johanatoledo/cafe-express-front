@@ -1,21 +1,28 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4001";   
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4002";   
+
+const headersJson = {
+  "Content-Type": "application/json",
+  "Bypass-Tunnel-Reminder": "true",
+};
+
+async function manejarRespuesta(response, mensajeError) {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || mensajeError);
+  }
+
+  return response.json();
+}
 
 export async function crearPedido(data) {
   const response = await fetch(`${API_URL}/api/pedidos`, {
     method: "POST",
     mode: 'cors',
-    headers: {
-      "Content-Type": "application/json",
-      'Bypass-Tunnel-Reminder': 'true'
-    },
+    headers: headersJson,
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    throw new Error("No se pudo crear el pedido");
-  }
-
-  return response.json();
+  return manejarRespuesta(response, "No se pudo crear el pedido");
 }
 
 export async function obtenerPedido(id) {
@@ -34,7 +41,7 @@ export async function obtenerPedido(id) {
          data: response,
       url: `${API_URL}/api/pedidos`,
       });
-      throw new Error(errorData.message || "No se pudo obtener el pedido");
+      return manejarRespuesta(response, "No se pudo obtener el pedido");
     }
 
     return response.json();
@@ -49,11 +56,8 @@ export async function obtenerPedidosAdmin() {
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    throw new Error("No se pudieron obtener los pedidos");
-  }
-
-  return response.json();
+  
+  return manejarRespuesta(response, "No se pudieron obtener los pedidos");
 }
 
 export async function marcarPedidoEntregado(id) {
@@ -61,9 +65,26 @@ export async function marcarPedidoEntregado(id) {
     method: "PATCH",
   });
 
-  if (!response.ok) {
-    throw new Error("No se pudo marcar como entregado");
-  }
-
-  return response.json();
+  
+  return manejarRespuesta(response, "No se pudo marcar como entregado");
 }
+
+export async function confirmarPagoPedido(id) {
+  const response = await fetch(`${API_URL}/api/pedidos/${id}/pago`, {
+    method: "PATCH",
+  });
+
+  return manejarRespuesta(response, "No se pudo confirmar el pago");
+}
+
+export async function asignarUbicacionPedido(id, ubicacion) {
+  const response = await fetch(`${API_URL}/api/pedidos/${id}/ubicacion`, {
+    method: "PATCH",
+    mode: "cors",
+    headers: headersJson,
+    body: JSON.stringify({ ubicacion }),
+  });
+
+  return manejarRespuesta(response, "No se pudo asignar la ubicación");
+}
+
