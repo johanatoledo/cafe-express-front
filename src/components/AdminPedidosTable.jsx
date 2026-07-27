@@ -3,6 +3,7 @@
 import { useState } from "react";
 import TimerPedido from "./TimerPedido";
 
+
 function EstadoBadge({ estado }) {
   const estaListo = estado === "listo";
 
