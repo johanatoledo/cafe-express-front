@@ -110,7 +110,7 @@ export default function AdminPedidosTable({
         <table className="w-full min-w-[1200px] border-collapse">
           <thead className="bg-cafe-caramelo text-white">
             <tr>
-              <th className="p-4 text-left">Id</th>
+              <th className="p-4 text-left">Nro Pedido</th>
               <th className="p-4 text-left">Cliente</th>
               <th className="p-4 text-left">Tipo</th>
               <th className="p-4 text-left">Ubicación</th>
@@ -156,7 +156,7 @@ export default function AdminPedidosTable({
               return (
                 <tr key={pedido.id} className="border-b border-gray-100">
                   <td className="p-4 font-black text-gray-900">
-                    #{pedido.id}
+                    {pedido.id}
                   </td>
 
                   <td className="p-4 font-black uppercase text-gray-900">
@@ -189,7 +189,7 @@ export default function AdminPedidosTable({
                           onClick={() =>
                             onAsignarUbicacion(pedido.id, ubicacionActual)
                           }
-                          className="rounded-xl bg-gray-900 px-3 py-2 text-xs font-black text-white hover:bg-black"
+                          className="rounded-xl bg-cafe-caramelo px-3 py-2 text-xs font-black text-white hover:bg-black"
                         >
                           Guardar ubicación
                         </button>
@@ -204,12 +204,12 @@ export default function AdminPedidosTable({
                   <td className="p-4 text-sm text-gray-700">
                     {productos.length
                       ? productos
-                          .map((item) => `${item.nombre} x${item.cantidad}`)
-                          .join(", ")
+                          .map((item) => `* ${item.cantidad} ${item.nombre}`)
+                          .join("\n")
                       : "Sin productos"}
                   </td>
 
-                  <td className="p-4 font-black text-red-700">
+                  <td className="p-3 font-black text-red-700">
                     S/ {Number(pedido.total).toFixed(2)}
                   </td>
 
@@ -218,22 +218,28 @@ export default function AdminPedidosTable({
                   </td>
 
                   <td className="p-4">
-                    <div className="flex flex-col gap-2">
+                    { pagoVerificado ? (
+                      <span className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-3 py-1 text-xs font-black uppercase text-green-700">
+                        Pago confirmado
+                      </span>):(
+                     <div className="flex flex-col gap-2">
                       <PagoBadge pagoVerificado={pagoVerificado} />
-
-                      {!pagoVerificado && (
-                        <button
-                          onClick={() => onConfirmarPago(pedido.id)}
-                          className="rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800"
-                        >
-                          Confirmar pago
-                        </button>
-                      )}
                     </div>
+                    )}
                   </td>
+                   
+                
 
                   <td className="p-4">
+                  { pagoVerificado ? (
+                    <span className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-3 py-1 text-xs font-black uppercase text-green-700">
+                      ---
+                    </span> 
+                  ) : (     
                     <EstadoBadge estado={pedido.estado} />
+                  )
+                  }
+                    
                   </td>
 
                   <td className="p-4">
@@ -246,17 +252,29 @@ export default function AdminPedidosTable({
                   </td>
 
                   <td className="p-4">
-                    <button
+                    {pagoVerificado? (
+
+                      <button
                       onClick={() => onEntregar(pedido.id)}
-                      disabled={!pagoVerificado}
                       className={`rounded-xl px-4 py-2 text-sm font-black text-white ${
                         pagoVerificado
                           ? "bg-green-700 hover:bg-green-800"
                           : "cursor-not-allowed bg-gray-300"
                       }`}
+                    
                     >
                       Marcar entregado
                     </button>
+                        
+                      ): (
+                      <button
+                          onClick={() => onConfirmarPago(pedido.id)}
+                          className="rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800"
+                        >
+                          Confirmar pago
+                        </button>
+                        
+                      )}
                   </td>
                 </tr>
               );

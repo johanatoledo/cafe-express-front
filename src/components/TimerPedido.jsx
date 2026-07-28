@@ -47,7 +47,7 @@ export default function TimerPedido({
     return compacto ? (
       <div className="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-2 text-sm font-black text-red-700">
         <Clock3 size={18} />
-        <span>Pago pendiente</span>
+        <span>Confirme pago para iniciar</span>
       </div>
     ) : (
       <div className="rounded-3xl border border-red-200 bg-white p-5 text-center shadow-xl">
@@ -61,7 +61,8 @@ export default function TimerPedido({
   if (tiempoRestante === null) {
     return compacto ? (
       <div className="inline-flex items-center gap-2 rounded-xl bg-gray-100 px-3 py-2 text-sm font-black text-gray-600">
-        Sin iniciar
+        <Clock3 size={18} />
+        <span>Sin iniciar</span>
       </div>
     ) : (
       <div className="rounded-3xl border border-gray-200 bg-white p-5 text-center shadow-xl">
