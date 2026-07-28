@@ -269,7 +269,11 @@ export default function AdminPedidosTable({
                       ): (
                       <button
                           onClick={() => onConfirmarPago(pedido.id)}
-                          className="rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800"
+                            className={`rounded-xl px-4 py-2 text-sm font-black text-white ${
+                        pagoVerificado
+                          ? " bg-purple-700 hover:bg-purple-800"
+                          : "cursor-not-allowed bg-gray-300"
+                      }`}
                         >
                           Confirmar pago
                         </button>
