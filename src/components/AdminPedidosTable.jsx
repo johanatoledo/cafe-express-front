@@ -3,19 +3,33 @@
 import { useState } from "react";
 import TimerPedido from "./TimerPedido";
 
+function EstadoBadge({ estado, pagoVerificado }) {
+  // Si no se ha verificado el pago, el estado visual siempre es PENDIENTE
+  if (!pagoVerificado) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-xl bg-amber-100 px-3 py-1 text-xs font-black uppercase text-amber-800">
+        <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+        Pendiente
+      </span>
+    );
+  }
 
-function EstadoBadge({ estado }) {
-  const estaListo = estado === "listo";
+  const estaListo = estado?.toLowerCase() === "listo";
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-xl px-3 py-1 text-xs font-black uppercase ${
+      className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1 text-xs font-black uppercase ${
         estaListo
           ? "bg-green-100 text-green-700"
-          : "bg-yellow-100 text-yellow-800"
+          : "bg-blue-100 text-blue-700"
       }`}
     >
-      {estado}
+      <span
+        className={`h-2 w-2 rounded-full ${
+          estaListo ? "bg-green-500" : "bg-blue-500 animate-ping"
+        }`}
+      ></span>
+      {estado || "En Preparación"}
     </span>
   );
 }
@@ -23,13 +37,13 @@ function EstadoBadge({ estado }) {
 function PagoBadge({ pagoVerificado }) {
   return (
     <span
-      className={`inline-flex rounded-xl px-3 py-1 text-xs font-black uppercase ${
+      className={`inline-flex items-center rounded-xl px-3 py-1 text-xs font-black uppercase ${
         pagoVerificado
           ? "bg-green-100 text-green-700"
           : "bg-red-100 text-red-700"
       }`}
     >
-      {pagoVerificado ? "Pago verificado" : "Pago pendiente"}
+      {pagoVerificado ? "Pago Verificado" : "Pago Pendiente"}
     </span>
   );
 }
@@ -71,13 +85,14 @@ export default function AdminPedidosTable({
 
   return (
     <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
+      {/* Filtros superiores */}
       <div className="flex flex-wrap gap-3 border-b bg-gray-50 p-4">
         <button
           onClick={() => setFiltroTipo("todos")}
-          className={`rounded-xl px-4 py-2 font-black transition ${
+          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "todos"
               ? "bg-cafe-caramelo text-white"
-              : "border bg-white text-gray-700"
+              : "border bg-white text-gray-700 hover:bg-gray-100"
           }`}
         >
           Todos ({pedidos.length})
@@ -85,10 +100,10 @@ export default function AdminPedidosTable({
 
         <button
           onClick={() => setFiltroTipo("restaurante")}
-          className={`rounded-xl px-4 py-2 font-black transition ${
+          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "restaurante"
-              ? "bg-green-700 text-white"
-              : "border bg-white text-gray-700"
+              ? "bg-amber-700 text-white"
+              : "border bg-white text-gray-700 hover:bg-gray-100"
           }`}
         >
           Restaurante ({totalRestaurante})
@@ -96,35 +111,36 @@ export default function AdminPedidosTable({
 
         <button
           onClick={() => setFiltroTipo("llevar")}
-          className={`rounded-xl px-4 py-2 font-black transition ${
+          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "llevar"
               ? "bg-purple-700 text-white"
-              : "border bg-white text-gray-700"
+              : "border bg-white text-gray-700 hover:bg-gray-100"
           }`}
         >
           Para llevar ({totalLlevar})
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[1200px] border-collapse">
-          <thead className="bg-cafe-caramelo text-white">
+      {/* Tabla con scroll horizontal responsivo */}
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[1100px] border-collapse text-left text-sm">
+          <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
             <tr>
-              <th className="p-4 text-left">Nro Pedido</th>
-              <th className="p-4 text-left">Cliente</th>
-              <th className="p-4 text-left">Tipo</th>
-              <th className="p-4 text-left">Ubicación</th>
-              <th className="p-4 text-left">Pedido</th>
-              <th className="p-4 text-left">Total</th>
-              <th className="p-4 text-left">Yape</th>
-              <th className="p-4 text-left">Pago</th>
-              <th className="p-4 text-left">Estado</th>
-              <th className="p-4 text-left">Tiempo</th>
-              <th className="p-4 text-left">Acción</th>
+              <th className="p-4">Nro</th>
+              <th className="p-4">Cliente</th>
+              <th className="p-4">Tipo</th>
+              <th className="p-4">Ubicación</th>
+              <th className="p-4 min-w-[240px]">Pedido</th>
+              <th className="p-4">Total</th>
+              <th className="p-4">Yape</th>
+              <th className="p-4">Pago</th>
+              <th className="p-4">Estado</th>
+              <th className="p-4">Tiempo</th>
+              <th className="p-4 text-center">Acción</th>
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {pedidosFiltrados.length === 0 && (
               <tr>
                 <td
@@ -154,24 +170,37 @@ export default function AdminPedidosTable({
                 ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
 
               return (
-                <tr key={pedido.id} className="border-b border-gray-100">
-                  <td className="p-4 font-black text-gray-900">
-                    {pedido.id}
+                <tr
+                  key={pedido.id}
+                  className="hover:bg-amber-50/40 transition-colors"
+                >
+                  {/* Nro Pedido */}
+                  <td className="p-4 align-top font-black text-gray-900">
+                    #{pedido.id}
                   </td>
 
-                  <td className="p-4 font-black uppercase text-gray-900">
+                  {/* Cliente */}
+                  <td className="p-4 align-top font-black uppercase text-gray-900 min-w-[130px]">
                     {pedido.cliente_nombre}
                   </td>
 
-                  <td className="p-4">
-                    <span className="rounded-xl bg-gray-100 px-3 py-1 text-xs font-black uppercase text-gray-700">
-                      {esRestaurante ? "Restaurante" : "Para llevar"}
+                  {/* Tipo de Pedido */}
+                  <td className="p-4 align-top">
+                    <span
+                      className={`inline-block rounded-xl px-3 py-1 text-xs font-black uppercase ${
+                        esRestaurante
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-purple-100 text-purple-800"
+                      }`}
+                    >
+                      {esRestaurante ? "Restaurante" : "Para Llevar"}
                     </span>
                   </td>
 
-                  <td className="p-4">
+                  {/* Ubicación / Mesa */}
+                  <td className="p-4 align-top min-w-[180px]">
                     {esRestaurante ? (
-                      <div className="flex min-w-[190px] flex-col gap-2">
+                      <div className="flex flex-col gap-2">
                         <input
                           type="text"
                           value={ubicacionActual}
@@ -181,68 +210,71 @@ export default function AdminPedidosTable({
                               [pedido.id]: e.target.value,
                             }))
                           }
-                          placeholder="Ej: Mesa 4, terraza"
-                          className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-bold outline-none focus:border-red-700"
+                          placeholder="Ej: Mesa 4, Terraza"
+                          className="w-full rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-bold outline-none focus:border-amber-700"
                         />
-
                         <button
                           onClick={() =>
                             onAsignarUbicacion(pedido.id, ubicacionActual)
                           }
-                          className="rounded-xl bg-cafe-caramelo px-3 py-2 text-xs font-black text-white hover:bg-black"
+                          className="rounded-xl bg-gray-800 px-3 py-1.5 text-xs font-black text-white hover:bg-black transition"
                         >
-                          Guardar ubicación
+                          Guardar Ubicación
                         </button>
                       </div>
                     ) : (
-                      <span className="text-sm font-bold text-gray-500">
-                        Recojo en mostrador
+                      <span className="text-xs font-bold text-gray-500 italic">
+                        Recojo en Mostrador
                       </span>
                     )}
                   </td>
 
-                  <td className="p-4 text-sm text-gray-700">
-                    {productos.length
-                      ? productos
-                          .map((item) => `* ${item.cantidad} ${item.nombre}`)
-                          .join("\n")
-                      : "Sin productos"}
+                  {/* Detalle del Pedido (Estructura mejorada) */}
+                  <td className="p-4 align-top min-w-[240px] whitespace-normal">
+                    {productos.length > 0 ? (
+                      <ul className="space-y-1.5 text-xs">
+                        {productos.map((item, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-1.5 text-gray-800 font-medium"
+                          >
+                            <span className="font-black text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
+                              {item.cantidad}x
+                            </span>
+                            <span className="leading-tight">{item.nombre}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="text-xs text-gray-400">Sin productos</span>
+                    )}
                   </td>
 
-                  <td className="p-3 font-black text-red-700">
+                  {/* Total */}
+                  <td className="p-4 align-top font-black text-red-600 whitespace-nowrap">
                     S/ {Number(pedido.total).toFixed(2)}
                   </td>
 
-                  <td className="p-4 font-bold text-gray-700">
-                    {pedido.yape_operacion}
+                  {/* Yape */}
+                  <td className="p-4 align-top font-mono font-bold text-gray-800">
+                    {pedido.yape_operacion || "—"}
                   </td>
 
-                  <td className="p-4">
-                    { pagoVerificado ? (
-                      <span className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-3 py-1 text-xs font-black uppercase text-green-700">
-                        Pago confirmado
-                      </span>):(
-                     <div className="flex flex-col gap-2">
-                      <PagoBadge pagoVerificado={pagoVerificado} />
-                    </div>
-                    )}
-                  </td>
-                   
-                
-
-                  <td className="p-4">
-                  { pagoVerificado ? (
-                    <span className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-3 py-1 text-xs font-black uppercase text-green-700">
-                      ---
-                    </span> 
-                  ) : (     
-                    <EstadoBadge estado={pedido.estado} />
-                  )
-                  }
-                    
+                  {/* Estado del Pago */}
+                  <td className="p-4 align-top">
+                    <PagoBadge pagoVerificado={pagoVerificado} />
                   </td>
 
-                  <td className="p-4">
+                  {/* Estado del Pedido */}
+                  <td className="p-4 align-top">
+                    <EstadoBadge
+                      estado={pedido.estado}
+                      pagoVerificado={pagoVerificado}
+                    />
+                  </td>
+
+                  {/* Tiempo / Cronómetro */}
+                  <td className="p-4 align-top">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
@@ -251,34 +283,23 @@ export default function AdminPedidosTable({
                     />
                   </td>
 
-                  <td className="p-4">
-                    {pagoVerificado? (
-
+                  {/* Acciones */}
+                  <td className="p-4 align-top text-center">
+                    {pagoVerificado ? (
                       <button
-                      onClick={() => onEntregar(pedido.id)}
-                      className={`rounded-xl px-4 py-2 text-sm font-black text-white ${
-                        pagoVerificado
-                          ? "bg-green-700 hover:bg-green-800"
-                          : "cursor-not-allowed bg-gray-300"
-                      }`}
-                    
-                    >
-                      Marcar entregado
-                    </button>
-                        
-                      ): (
+                        onClick={() => onEntregar(pedido.id)}
+                        className="w-full min-w-[130px] rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm"
+                      >
+                        Marcar Entregado
+                      </button>
+                    ) : (
                       <button
-                          onClick={() => onConfirmarPago(pedido.id)}
-                            className={`rounded-xl px-4 py-2 text-sm font-black text-white ${
-                        pagoVerificado
-                          ? " bg-purple-700 hover:bg-purple-800"
-                          : "cursor-not-allowed bg-gray-300"
-                      }`}
-                        >
-                          Confirmar pago
-                        </button>
-                        
-                      )}
+                        onClick={() => onConfirmarPago(pedido.id)}
+                        className="w-full min-w-[130px] rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse"
+                      >
+                        Confirmar Pago
+                      </button>
+                    )}
                   </td>
                 </tr>
               );
