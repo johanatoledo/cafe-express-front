@@ -16,31 +16,36 @@ export default function PedidoDetallePage() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    // 1. Evitamos ejecutar la lógica si aún no tenemos el ID
     if (!id) return;
+
+    let activo = true;
 
     const cargarPedido = async () => {
       try {
         const data = await obtenerPedido(id);
-        setPedido(data);
+        if (activo) {
+          setPedido(data);
+        }
       } catch (error) {
         console.error("Error al cargar el pedido:", error);
       } finally {
-        setCargando(false);
+        if (activo) {
+          setCargando(false);
+        }
       }
     };
 
-    // Ejecución inmediata
     cargarPedido();
 
-    // 2. Configuramos el intervalo para el seguimiento en tiempo real
-    const intervalo = setInterval(() => {
+    const intervalo = window.setInterval(() => {
       cargarPedido();
-    }, 10000); 
+    }, 10000);
 
-    // 3. Limpieza: Importante para evitar fugas de memoria
-    return () => clearInterval(intervalo);
-  }, [id]); 
+    return () => {
+      activo = false;
+      window.clearInterval(intervalo);
+    };
+  }, [id]);
 
  
 
@@ -140,7 +145,11 @@ export default function PedidoDetallePage() {
               {/*contenedor con el estado del pedido */}
               
           <div className="mt-8">
-            <TimerPedido creadoEn={pedido.creado_en} estado={pedido.estado} />
+            <TimerPedido
+              pagoConfirmadoEn={pedido.pago_confirmado_en}
+              pagoVerificado={pedido.pago_verificado}
+              estado={pedido.estado}
+            />
           </div>
         </div>
       </section>
