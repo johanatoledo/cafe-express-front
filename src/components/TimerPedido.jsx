@@ -179,9 +179,6 @@ export default function TimerPedido({
             Estamos preparando tu orden
           </h3>
 
-          <p className="text-xs font-medium text-amber-100">
-            Tu pedido ingresó a cocina.
-          </p>
         </div>
       </div>
 

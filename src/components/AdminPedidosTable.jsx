@@ -102,9 +102,9 @@ export default function AdminPedidosTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-      {/* Filtros superiores */}
-      <div className="flex flex-wrap gap-3 border-b bg-gray-50 p-4">
+  <section className="w-full px-4 py-8 md:px-6 xl:px-8">
+    <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
+     <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
         <button
           onClick={() => setFiltroTipo("todos")}
           className={`rounded-xl px-4 py-2 text-sm font-black transition ${
@@ -140,22 +140,24 @@ export default function AdminPedidosTable({
       </div>
 
       {/* Tabla principal */}
-      <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-[1100px] border-collapse text-left text-sm">
+    
+      <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
+       <div div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[1450px] table-auto border-collapse text-left text-base">
           <thead className="bg-amber-800 text-xs font-black uppercase text-white tracking-wider">
             <tr>
-              <th className="p-4">Nro</th>
-              <th className="p-4">Cliente</th>
-              <th className="p-4">Tipo</th>
-              <th className="p-4">Ubicación</th>
-              <th className="p-4 min-w-[240px]">Pedido</th>
-              <th className="p-4">Total</th>
-              <th className="p-4">Yape</th>
-              <th className="p-4">Pago</th>
-              <th className="p-4">Estado</th>
-              <th className="p-4">Tiempo</th>
-              <th className="p-4 text-center">Acción</th>
-            </tr>
+              <th className="whitespace-nowrap px-5 py-4">Id</th>
+              <th className="whitespace-nowrap px-5 py-4">Cliente</th>
+              <th className="whitespace-nowrap px-5 py-4">Tipo</th>
+              <th className="whitespace-nowrap px-5 py-4">Ubicación</th>
+              <th className="whitespace-nowrap px-5 py-4">Pedido</th>
+              <th className="whitespace-nowrap px-5 py-4">Total</th>
+              <th className="whitespace-nowrap px-5 py-4">Yape</th>
+              <th className="whitespace-nowrap px-5 py-4">Pago</th>
+              <th className="whitespace-nowrap px-5 py-4">Estado</th>
+              <th className="whitespace-nowrap px-5 py-4">Tiempo</th>
+              <th className="whitespace-nowrap px-5 py-4">Acción</th>
+        </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-100">
@@ -339,6 +341,8 @@ export default function AdminPedidosTable({
           </tbody>
         </table>
       </div>
-    </div>
+      </div>   
+     </div>
+    </section>
   );
 }
