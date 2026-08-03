@@ -70,44 +70,20 @@ export async function marcarPedidoEntregado(id) {
 }
 
 export async function confirmarPagoPedido(id) {
-   try {
-    const fechaActual = new Date().toISOString();
-
-    //actulizacion en el servidor
+  try{
   const response = await fetch(`${API_URL}/api/pedidos/${id}/pago`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        pago_verificado: true,
-        estado: "preparando",
-        pago_confirmado_en: fechaActual,
-      }),
-  });
-  
-  if (!res.ok) throw new Error("Error al actualizar estado");
+    mode: "cors",
+    headers: headersJson,
+    });
+ const data = await manejarRespuesta(response, "No se pudo confirmar el pago");
 
-    // 2. Actualizar el estado local para ver el cambio instantáneo
-    setPedidos((prev) =>
-      prev.map((p) =>
-        p.id === pedidoId
-          ? {
-              ...p,
-              pago_verificado: true,
-              estado: "preparando",
-              pago_confirmado_en: fechaActual,
-            }
-          : p
-      )
-    );
+    return data;
   } catch (error) {
     console.error("Error al confirmar pago:", error);
     throw error;
   }
-
-
-  return manejarRespuesta(response, "No se pudo confirmar el pago");
 }
-
 export async function asignarUbicacionPedido(id, ubicacion) {
   const response = await fetch(`${API_URL}/api/pedidos/${id}/ubicacion`, {
     method: "PATCH",

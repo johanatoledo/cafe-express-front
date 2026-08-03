@@ -4,7 +4,6 @@ import { useState } from "react";
 import TimerPedido from "./TimerPedido";
 
 function EstadoBadge({ estado, pagoVerificado }) {
-  // Si no se ha verificado el pago, el estado visual siempre es PENDIENTE
   if (!pagoVerificado) {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-xl bg-amber-100 px-3 py-1 text-xs font-black uppercase text-amber-800">
@@ -56,6 +55,25 @@ export default function AdminPedidosTable({
 }) {
   const [ubicaciones, setUbicaciones] = useState({});
   const [filtroTipo, setFiltroTipo] = useState("todos");
+  const [cargandoId, setCargandoId] = useState(null);
+
+  const handleAccionConfirmar = async (id) => {
+    setCargandoId(id);
+    try {
+      await onConfirmarPago(id);
+    } finally {
+      setCargandoId(null);
+    }
+  };
+
+  const handleAccionEntregar = async (id) => {
+    setCargandoId(id);
+    try {
+      await onEntregar(id);
+    } finally {
+      setCargandoId(null);
+    }
+  };
 
   const pedidosFiltrados = pedidos.filter((pedido) => {
     if (filtroTipo === "todos") return true;
@@ -77,7 +95,7 @@ export default function AdminPedidosTable({
           No hay pedidos activos
         </p>
         <p className="mt-2 text-gray-500">
-          Los nuevos pedidos aparecerán aquí automáticamente al recargar.
+          Los nuevos pedidos aparecerán aquí automáticamente.
         </p>
       </div>
     );
@@ -91,7 +109,7 @@ export default function AdminPedidosTable({
           onClick={() => setFiltroTipo("todos")}
           className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "todos"
-              ? "bg-cafe-caramelo text-white"
+              ? "bg-amber-800 text-white"
               : "border bg-white text-gray-700 hover:bg-gray-100"
           }`}
         >
@@ -121,10 +139,10 @@ export default function AdminPedidosTable({
         </button>
       </div>
 
-      {/* Tabla con scroll horizontal responsivo */}
+      {/* Tabla principal */}
       <div className="w-full overflow-x-auto">
         <table className="w-full min-w-[1100px] border-collapse text-left text-sm">
-          <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
+          <thead className="bg-amber-800 text-xs font-black uppercase text-white tracking-wider">
             <tr>
               <th className="p-4">Nro</th>
               <th className="p-4">Cliente</th>
@@ -165,9 +183,16 @@ export default function AdminPedidosTable({
               }
 
               const esRestaurante = pedido.tipo_pedido === "restaurante";
-              const pagoVerificado = Boolean(pedido.pago_verificado);
+              const pagoVerificado = Boolean(
+                pedido.pago_verificado === 1 ||
+                  pedido.pago_verificado === "1" ||
+                  pedido.pago_verificado === true
+              );
+
               const ubicacionActual =
                 ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
+
+              const estaProcesando = cargandoId === pedido.id;
 
               return (
                 <tr
@@ -229,7 +254,7 @@ export default function AdminPedidosTable({
                     )}
                   </td>
 
-                  {/* Detalle del Pedido (Estructura mejorada) */}
+                  {/* Detalle del Pedido */}
                   <td className="p-4 align-top min-w-[240px] whitespace-normal">
                     {productos.length > 0 ? (
                       <ul className="space-y-1.5 text-xs">
@@ -252,7 +277,7 @@ export default function AdminPedidosTable({
 
                   {/* Total */}
                   <td className="p-4 align-top font-black text-red-600 whitespace-nowrap">
-                    S/ {Number(pedido.total).toFixed(2)}
+                    S/ {Number(pedido.total || 0).toFixed(2)}
                   </td>
 
                   {/* Yape */}
@@ -287,17 +312,19 @@ export default function AdminPedidosTable({
                   <td className="p-4 align-top text-center">
                     {pagoVerificado ? (
                       <button
-                        onClick={() => onEntregar(pedido.id)}
-                        className="w-full min-w-[130px] rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm"
+                        disabled={estaProcesando}
+                        onClick={() => handleAccionEntregar(pedido.id)}
+                        className="w-full min-w-[130px] rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
                       >
-                        Marcar Entregado
+                        {estaProcesando ? "Procesando..." : "Marcar Entregado"}
                       </button>
                     ) : (
                       <button
-                        onClick={() => onConfirmarPago(pedido.id)}
-                        className="w-full min-w-[130px] rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse"
+                        disabled={estaProcesando}
+                        onClick={() => handleAccionConfirmar(pedido.id)}
+                        className="w-full min-w-[130px] rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
                       >
-                        Confirmar Pago
+                        {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
                       </button>
                     )}
                   </td>
