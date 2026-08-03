@@ -10,6 +10,7 @@ import {
   asignarUbicacionPedido,
 } from "@/services/pedidoService";
 
+
 export default function AdminPedidosPage() {
   const [pedidos, setPedidos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -45,21 +46,37 @@ export default function AdminPedidosPage() {
     }
   };
 
-  const confirmarPago = async (id) => {
-    try {
-      await confirmarPagoPedido(id);
+ const confirmarPago = async (id) => {
+  try {
+    const respuesta = await confirmarPagoPedido(id);
 
-      setPedidos((prev) =>
-        prev.map((pedido) =>
-          pedido.id === id
-            ? { ...pedido, pago_verificado: true }
-            : pedido
-        )
+    if (!respuesta?.pago_confirmado_en) {
+      console.error(
+        "El backend confirmó el pago, pero no devolvió pago_confirmado_en:",
+        respuesta
       );
-    } catch (error) {
-      console.error("Error al confirmar pago:", error);
+
+      await cargarPedidos();
+      return;
     }
-  };
+
+    setPedidos((prev) =>
+      prev.map((pedido) =>
+        Number(pedido.id) === Number(id)
+          ? {
+              ...pedido,
+              pago_verificado: true,
+              pago_confirmado_en:
+                respuesta.pago_confirmado_en,
+              estado: respuesta.estado ?? "preparando",
+            }
+          : pedido
+      )
+    );
+  } catch (error) {
+    console.error("Error al confirmar pago:", error);
+  }
+};
 
   const asignarUbicacion = async (id, ubicacion) => {
     const ubicacionLimpia = ubicacion.trim();

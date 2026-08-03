@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Check, Clock3, ChefHatIcon } from "lucide-react";
 
-// Tiempo estándar de preparación: 20 minutos
 const TIEMPO_ESPERA_MS = 20 * 60 * 1000;
 
 export default function TimerPedido({
@@ -14,43 +13,53 @@ export default function TimerPedido({
 }) {
   const [tiempoRestante, setTiempoRestante] = useState(null);
 
+  const estadoNormalizado = String(estado || "").toLowerCase();
+  const estaEntregado = estadoNormalizado === "entregado";
+  const estaListo = estadoNormalizado === "listo";
+
   useEffect(() => {
-    // 1. Si el pago no está verificado o ya fue entregado, destruimos el timer
-    if (!pagoVerificado || estado === "entregado") {
+    if (!pagoVerificado || !pagoConfirmadoEn || estaEntregado) {
+      setTiempoRestante(null);
+      return;
+    }
+
+    const inicio = new Date(pagoConfirmadoEn).getTime();
+
+    if (Number.isNaN(inicio)) {
+      console.error(
+        "Fecha de confirmación de pago inválida:",
+        pagoConfirmadoEn
+      );
+
       setTiempoRestante(null);
       return;
     }
 
     const calcularTiempo = () => {
-      // 2. Si no viene fecha del servidor, usamos la hora actual como fallback para iniciar el conteo
-      const timestampInicio = pagoConfirmadoEn
-        ? new Date(pagoConfirmadoEn).getTime()
-        : Date.now();
+      const tiempoTranscurrido = Date.now() - inicio;
+      const restante = TIEMPO_ESPERA_MS - tiempoTranscurrido;
 
-      // Si la conversión resulta en NaN, caemos a Date.now()
-      const inicio = Number.isNaN(timestampInicio) ? Date.now() : timestampInicio;
-      const ahora = Date.now();
-      const restante = TIEMPO_ESPERA_MS - (ahora - inicio);
-
-      // Seteamos el tiempo restante asegurando que no baje de 0
       setTiempoRestante(Math.max(restante, 0));
     };
 
     calcularTiempo();
-    const intervalo = setInterval(calcularTiempo, 1000);
 
-    return () => clearInterval(intervalo);
-  }, [pagoConfirmadoEn, pagoVerificado, estado]);
+    const intervalo = window.setInterval(calcularTiempo, 1000);
 
-  const estadoNormalizado = estado?.toLowerCase();
-  const pedidoListo = estadoNormalizado === "listo" || tiempoRestante === 0;
+    return () => {
+      window.clearInterval(intervalo);
+    };
+  }, [
+    pagoConfirmadoEn,
+    pagoVerificado,
+    estaEntregado,
+  ]);
 
-  // CASO A: Pago no verificado aún
   if (!pagoVerificado) {
     return compacto ? (
       <div className="inline-flex items-center gap-1.5 rounded-xl bg-red-100 px-3 py-1.5 text-xs font-black text-red-700">
         <Clock3 size={15} />
-        <span>Confirme pago para iniciar</span>
+        <span>Confirmar pago</span>
       </div>
     ) : (
       <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-center">
@@ -61,26 +70,57 @@ export default function TimerPedido({
     );
   }
 
-  // CASO B: El tiempo aún no se calcula (Cargando)
-  if (tiempoRestante === null) {
+  if (!pagoConfirmadoEn) {
     return compacto ? (
-      <div className="inline-flex items-center gap-1.5 rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-black text-gray-500">
-        <Clock3 size={15} className="animate-spin" />
-        <span>Calculando...</span>
+      <div className="inline-flex items-center gap-1.5 rounded-xl bg-orange-100 px-3 py-1.5 text-xs font-black text-orange-700">
+        <Clock3 size={15} />
+        <span>Fecha no registrada</span>
       </div>
     ) : (
-      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 text-center">
-        <p className="text-xs font-bold text-gray-500">Iniciando cronómetro...</p>
+      <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4 text-center">
+        <p className="text-xs font-black uppercase text-orange-700">
+          El pago está verificado, pero falta la hora de confirmación
+        </p>
       </div>
     );
   }
 
-  // Formatear tiempo M:SS
-  const minutos = Math.floor(tiempoRestante / 60000);
-  const segundos = Math.floor((tiempoRestante % 60000) / 1000);
-  const tiempoFormateado = `${minutos}:${String(segundos).padStart(2, "0")}`;
+  if (estaEntregado) {
+    return compacto ? (
+      <div className="inline-flex items-center gap-1.5 rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-black text-gray-600">
+        <Check size={16} />
+        <span>Entregado</span>
+      </div>
+    ) : null;
+  }
 
-  // VISTA COMPACTA (Para la tabla del Admin)
+  if (tiempoRestante === null) {
+    return compacto ? (
+      <div className="inline-flex items-center gap-1.5 rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-black text-gray-500">
+        <Clock3 size={15} className="animate-pulse" />
+        <span>Calculando</span>
+      </div>
+    ) : (
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 text-center">
+        <p className="text-xs font-bold text-gray-500">
+          Iniciando cronómetro...
+        </p>
+      </div>
+    );
+  }
+
+  const pedidoListo = estaListo || tiempoRestante <= 0;
+
+  const minutos = Math.floor(tiempoRestante / 60000);
+  const segundos = Math.floor(
+    (tiempoRestante % 60000) / 1000
+  );
+
+  const tiempoFormateado = `${minutos}:${String(segundos).padStart(
+    2,
+    "0"
+  )}`;
+
   if (compacto) {
     if (pedidoListo) {
       return (
@@ -93,24 +133,33 @@ export default function TimerPedido({
 
     return (
       <div className="inline-flex items-center gap-1.5 rounded-xl bg-amber-100 px-3 py-1.5 text-xs font-black text-amber-900 ring-1 ring-amber-200">
-        <Clock3 size={15} className="animate-pulse text-amber-700" />
-        <span className="font-mono">{tiempoFormateado}</span>
+        <Clock3
+          size={15}
+          className="animate-pulse text-amber-700"
+        />
+
+        <span className="font-mono">
+          {tiempoFormateado}
+        </span>
       </div>
     );
   }
 
-  // VISTA COMPLETA (Para el cliente / seguimiento)
   if (pedidoListo) {
     return (
       <div className="overflow-hidden rounded-3xl border border-green-200 bg-white shadow-xl">
-        <div className="flex items-center gap-4 bg-gradient-to-r from-green-500 to-emerald-600 px-5 py-4 text-white">
+        <div className="flex items-center gap-4 bg-linear-to-r from-green-500 to-emerald-600 px-5 py-4 text-white">
           <div className="rounded-2xl bg-white/20 p-3">
             <Check size={28} />
           </div>
+
           <div>
-            <h3 className="text-lg font-black">Tu pedido está listo</h3>
+            <h3 className="text-lg font-black">
+              Tu pedido está listo
+            </h3>
+
             <p className="text-xs font-medium text-green-100">
-              Puedes acercarte a recoger tu pedido o esperarlo en la mesa asignada.
+              Puedes recogerlo o esperarlo en la ubicación asignada.
             </p>
           </div>
         </div>
@@ -120,21 +169,29 @@ export default function TimerPedido({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-amber-200 bg-white shadow-xl">
-      <div className="flex items-center gap-4 bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-4 text-white">
+      <div className="flex items-center gap-4 bg-linear-to-r from-amber-500 to-orange-500 px-5 py-4 text-white">
         <div className="rounded-2xl bg-white/20 p-3">
           <ChefHatIcon size={28} />
         </div>
+
         <div>
-          <h3 className="text-lg font-black">Estamos preparando tu orden</h3>
+          <h3 className="text-lg font-black">
+            Estamos preparando tu orden
+          </h3>
+
           <p className="text-xs font-medium text-amber-100">
-            Tu pedido ingresó a la cocina.
+            Tu pedido ingresó a cocina.
           </p>
         </div>
       </div>
 
       <div className="flex flex-col items-center justify-center px-5 py-6">
         <div className="flex items-center gap-3 rounded-2xl bg-amber-50 px-6 py-3 ring-1 ring-amber-200">
-          <Clock3 className="text-amber-700 animate-pulse" size={24} />
+          <Clock3
+            className="animate-pulse text-amber-700"
+            size={24}
+          />
+
           <span className="font-mono text-3xl font-black tracking-tight text-amber-950">
             {tiempoFormateado}
           </span>

@@ -26,29 +26,17 @@ export async function crearPedido(data) {
 }
 
 export async function obtenerPedido(id) {
-  const url = `${API_URL}/api/pedidos/${id}`;
-  console.log("Intentando fetch a:", url); // Verifica si la URL es correcta
-
-  try {
-    const response = await fetch(url, { cache: "no-store" });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error("Error del servidor detallado:", {
-        status: response.status,
-        statusText: response.statusText,
-        mensajeServidor: errorData.message,
-         data: response,
-      url: `${API_URL}/api/pedidos`,
-      });
-      return manejarRespuesta(response, "No se pudo obtener el pedido");
+  const response = await fetch(
+    `${API_URL}/api/pedidos/${id}`,
+    {
+      cache: "no-store",
     }
+  );
 
-    return response.json();
-  } catch (err) {
-    console.error("Error de red o de código:", err);
-    throw err;
-  }
+  return manejarRespuesta(
+    response,
+    "No se pudo obtener el pedido"
+  );
 }
 
 export async function obtenerPedidosAdmin() {

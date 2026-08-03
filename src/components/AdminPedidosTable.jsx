@@ -183,11 +183,16 @@ export default function AdminPedidosTable({
               }
 
               const esRestaurante = pedido.tipo_pedido === "restaurante";
-              const pagoVerificado = Boolean(
-                pedido.pago_verificado === 1 ||
-                  pedido.pago_verificado === "1" ||
-                  pedido.pago_verificado === true
-              );
+              function normalizarBooleano(valor) {
+                   return (
+                      valor === true ||
+                      valor === 1 ||
+                      valor === "1"
+                   );
+            }
+             const pagoVerificado = normalizarBooleano(
+             pedido.pago_verificado
+        );
 
               const ubicacionActual =
                 ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
