@@ -109,8 +109,8 @@ export default function AdminPedidosTable({
           onClick={() => setFiltroTipo("todos")}
           className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "todos"
-              ? "bg-amber-800 text-white"
-              : "border bg-white text-gray-700 hover:bg-gray-100"
+              ? "bg-cafe-espresso text-white"
+              : "border bg-white text-black hover:bg-gray-100"
           }`}
         >
           Todos ({pedidos.length})
@@ -155,7 +155,7 @@ export default function AdminPedidosTable({
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
-                <th className="w-[11%] p-2 sm:p-3 md:p-4">Tiempo</th>
+                <th className="w-[20%] p-2 sm:p-3 md:p-4">Tiempo</th>
                 <th className="w-[15%] p-2 sm:p-3 md:p-4">Accion</th>
             </tr>
           </thead>
@@ -321,7 +321,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-10 align-top wrap-break-word">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
