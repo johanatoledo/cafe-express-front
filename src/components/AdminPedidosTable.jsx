@@ -155,17 +155,17 @@ export default function AdminPedidosTable({
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
-                <th className="w-[20%] p-2 sm:p-3 md:p-4">Tiempo</th>
+                <th className="w-[20%] text-center p-2 sm:p-3 md:p-4">Tiempo</th>
                 <th className="w-[15%] p-2 sm:p-3 md:p-4">Accion</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-black/80">
             {pedidosFiltrados.length === 0 && (
               <tr>
                 <td
                   colSpan="11"
-                  className="p-8 text-center font-bold text-gray-500"
+                  className="p-8 text-center font-bold text-black"
                 >
                   No existen pedidos para este filtro.
                 </td>
@@ -219,10 +219,10 @@ export default function AdminPedidosTable({
                   {/* Tipo de Pedido */}
                   <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word ">
                     <span
-                      className={`inline-block rounded-xl px-3 py-1 text-xs font-black uppercase ${
+                      className={`inline-block rounded-xl px-4 py-1 text-xs font-black uppercase ${
                         esRestaurante
-                          ? " text-cafe-espresso"
-                          : " text-cafe-chocolate"
+                          ? " text-amber-700"
+                          : " text-shadow-red-800"
                       }`}
                     >
                       {esRestaurante ? "Restaurante" : "Para Llevar"}
@@ -269,7 +269,7 @@ export default function AdminPedidosTable({
                </div>
                 )
               ) : (
-              <span className="text-xs font-bold italic text-cafe-chocolate">
+              <span className="text-xs font-bold uppercase text-black">
                Recojo en Mostrador
               </span>
              )}
@@ -321,7 +321,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-10 align-top wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-6 align-top text-center wrap-break-word">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
