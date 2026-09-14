@@ -102,7 +102,7 @@ export default function AdminPedidosTable({
   }
 
   return (
-  <section className="w-full px-4 py-8 md:px-6 xl:px-8">
+  <section className="w-full px-4 py-8 md:px-2 xl:px-2">
     <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
      <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
         <button
@@ -144,7 +144,7 @@ export default function AdminPedidosTable({
       <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
        <div div className="w-full max-w-none overflow-hidden">
         <table className="w-full table-fixed border-collapse text-left text-xs sm:text-sm">
-          <thead className="bg-amber-800 text-xs font-black uppercase text-white tracking-wider">
+          <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
             <tr>
                 <th className="w-[6%] p-2 sm:p-3 md:p-4">ID</th>
                 <th className="w-[11%] p-2 sm:p-3 md:p-4">Cliente</th>
@@ -152,7 +152,7 @@ export default function AdminPedidosTable({
                 <th className="w-[14%] p-2 sm:p-3 md:p-4">Ubicación</th>
                 <th className="w-[20%] p-2 sm:p-3 md:p-4">Pedido</th>
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">Total</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Yape</th>
+                <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">Tiempo</th>
@@ -211,7 +211,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Cliente */}
-                  <td className="p-2 sm:p-3 md:p-4 wrap-break-word  font-black uppercase text-gray-900 min-w-[130px]">
+                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black uppercase text-gray-900 min-w-[130px]">
                     {pedido.cliente_nombre}
                   </td>
 
@@ -220,8 +220,8 @@ export default function AdminPedidosTable({
                     <span
                       className={`inline-block rounded-xl px-3 py-1 text-xs font-black uppercase ${
                         esRestaurante
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-purple-100 text-purple-800"
+                          ? " text-amber-800"
+                          : " text-purple-800"
                       }`}
                     >
                       {esRestaurante ? "Restaurante" : "Para Llevar"}
@@ -233,8 +233,8 @@ export default function AdminPedidosTable({
                 {esRestaurante ? (
                    pedido.ubicacion ? (
                     <div className="flex flex-col gap-2">
-                      <span className="inline-flex items-center rounded-xl bg-green-100 px-3 py-2 text-xs font-black uppercase text-green-700">
-                        📍 {pedido.ubicacion}
+                      <span className="inline-flex items-center rounded-xl  px-3 py-2 text-xs font-black uppercase text-green-700">
+                         {pedido.ubicacion}
                       </span>
                     </div>
                   ) : (
@@ -284,7 +284,7 @@ export default function AdminPedidosTable({
                             key={idx}
                             className="flex items-start gap-1.5 text-gray-800 font-medium"
                           >
-                            <span className="font-black text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
+                            <span className="font-black text-black  px-1.5 py-0.5 rounded">
                               {item.cantidad}
                             </span>
                             <span className="leading-tight">{item.nombre}</span>
@@ -307,12 +307,12 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Estado del Pago */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word text-center">
                     <PagoBadge pagoVerificado={pagoVerificado} />
                   </td>
 
                   {/* Estado del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-6 align-top  text-center wrap-break-word">
                     <EstadoBadge
                       estado={pedido.estado}
                       pagoVerificado={pagoVerificado}
@@ -320,7 +320,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
@@ -330,12 +330,12 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Acciones */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word text-center">
+                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word text-center">
                     {pagoVerificado ? (
                       <button
                         disabled={estaProcesando}
                         onClick={() => handleAccionEntregar(pedido.id)}
-                        className="w-full min-w-[130px] rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
+                        className="w-full min-w-32.5 rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
                       >
                         {estaProcesando ? "Procesando..." : "Marcar Entregado"}
                       </button>
@@ -343,7 +343,7 @@ export default function AdminPedidosTable({
                       <button
                         disabled={estaProcesando}
                         onClick={() => handleAccionConfirmar(pedido.id)}
-                        className="w-full min-w-[130px] rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
+                        className="w-full min-w-32.5 rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
                       >
                         {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
                       </button>
