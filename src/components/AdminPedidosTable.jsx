@@ -150,13 +150,13 @@ export default function AdminPedidosTable({
                 <th className="w-[11%] p-2 sm:p-3 md:p-4">Cliente</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Tipo</th>
                 <th className="w-[14%] p-2 sm:p-3 md:p-4">Ubicación</th>
-                <th className="w-[20%] p-2 sm:p-3 md:p-4">Pedido</th>
+                <th className="w-[20%] text-center p-2 sm:p-3 md:p-4">Pedido</th>
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">Total</th>
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
                 <th className="w-[20%] text-center p-2 sm:p-3 md:p-4">Tiempo</th>
-                <th className="w-[15%] p-2 sm:p-3 md:p-4">Accion</th>
+                <th className="w-[15%] text-center p-2 sm:p-3 md:p-4">Accion</th>
             </tr>
           </thead>
 
@@ -321,7 +321,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top text-center wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-6 align-top text-center whitespace-nowrap">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
