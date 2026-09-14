@@ -131,8 +131,8 @@ export default function AdminPedidosTable({
           onClick={() => setFiltroTipo("llevar")}
           className={`rounded-xl px-4 py-2 text-sm font-black transition ${
             filtroTipo === "llevar"
-              ? "bg-purple-700 text-white"
-              : "border bg-white text-gray-700 hover:bg-gray-100"
+              ? "bg-cafe-caramelo text-white"
+              : "border bg-white text-cafe-chocolate hover:bg-cafe-oscuro"
           }`}
         >
           Para llevar ({totalLlevar})
