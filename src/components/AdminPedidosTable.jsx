@@ -155,8 +155,8 @@ export default function AdminPedidosTable({
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Tiempo</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Accion</th>
+                <th className="w-[11%] p-2 sm:p-3 md:p-4">Tiempo</th>
+                <th className="whitespace-nowrap px-5 py-4">Accion</th>
             </tr>
           </thead>
 
