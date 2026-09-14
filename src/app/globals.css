@@ -1,0 +1,490 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cafe-espresso: #5c3d2e;
+  --color-cafe-chocolate: #3b2a22;
+  --color-cafe-crema: #f6eee7;
+  --color-cafe-caramelo: #c97b36;
+  --color-cafe-beige: #e7d3c1;
+  --color-cafe-oscuro: #1e1a18;
+}
+
+/* ===== RESET ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--color-cafe-crema);
+  color: var(--color-cafe-oscuro);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== ELEMENTOS ===== */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  user-select: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
+
+/* ===== SELECTION ===== */
+
+::selection {
+  background: var(--color-cafe-caramelo);
+  color: white;
+}
+.cafe-container {
+  width: min(100% - 1.5rem, 1320px);
+  margin-inline: auto;
+}
+/* ===== ESTILOS PARA BOTONES DE LAS CATEGORIAS ===== */
+.cafe-category-button-container {
+  color:var(--color-cafe-oscuro);
+  background-color: var(--color-cafe-caramelo);
+  opacity: 0.75;
+  border-color: var(--color-cafe-caramelo);
+  
+  
+}
+
+.cafe-category-button {
+  border-radius: 999px;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.cafe-category-button:hover {
+  transform: translateY(-2px);
+}
+
+.cafe-category-button-active {
+  background: var(--color-cafe-espresso);
+  color: white;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 0.10);
+}
+
+.cafe-category-button-inactive {
+  background: white;
+  color: var(--color-cafe-oscuro);
+  border: 1px solid #eadccf;
+}
+
+.cafe-category-button-inactive:hover {
+  background: #fffaf5;
+  color: var(--color-cafe-caramelo);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.07);
+}
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #efe3d8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c97b36;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5c3d2e;
+}
+
+/* ===== ESTILOS TARJETAS ===== */
+.cafe-product-card {
+  overflow: hidden;
+  border-radius: 2rem;
+  background: white;
+
+  border: 1px solid rgb(231 211 193 / 0.55);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+
+  box-shadow:
+    0 10px 25px rgb(201 123 54 / 0.05),
+    0 4px 10px rgb(201 123 54 / 0.04);
+}
+
+.cafe-product-card:hover {
+  transform: translateY(-10px);
+
+  border-color: rgb(201 123 54 / 0.18);
+
+  box-shadow:
+    0 30px 60px rgb(201 123 54 / 0.16),
+    0 12px 24px rgb(201 123 54 / 0.10);
+}
+
+.cafe-product-image-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.18),
+      transparent 45%
+    );
+}
+
+.cafe-product-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background: rgb(201 123 54 / 0.12);
+
+  padding: 0.45rem 0.9rem;
+
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: var(--color-cafe-caramelo);
+}
+
+.cafe-product-price {
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+
+  color: var(--color-cafe-espresso);
+}
+
+.cafe-button-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: 1rem;
+
+  background: var(--color-cafe-espresso);
+
+  padding: 0.8rem 1rem;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+
+  color: white;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.cafe-button-add:hover {
+  transform: translateY(-2px);
+
+  background: var(--color-cafe-chocolate);
+
+  box-shadow:
+    0 12px 24px rgb(92 61 46 / 0.18);
+}
+
+.cafe-button-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: 1rem;
+
+  background: #1f1f1f;
+
+  padding: 0.8rem 1rem;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+
+  color: white;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.cafe-button-remove:hover {
+  transform: translateY(-2px);
+
+  background: #7f1d1d;
+}
+
+/* ===== ESTILOS CARRITO ===== */
+.cafe-icon-cart{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  background: rgb(201 123 54 / 0.12);
+  padding: 0.45rem 0.9rem;
+  color: var(--color-cafe-caramelo);
+}
+
+.cafe-button-cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border-radius: 1rem;
+
+  background: var(--color-cafe-espresso);
+
+  padding: 0.8rem 1rem;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+
+  color: white;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.cafe-button-cart:hover {
+  transform: translateY(-2px);
+
+  background: var(--color-cafe-chocolate);
+
+  box-shadow:
+    0 12px 24px rgb(92 61 46 / 0.18);
+}
+/* ===== UTILIDADES ===== */
+
+@media (min-width: 768px) {
+  .cafe-container {
+    width: min(100% - 3rem, 1320px);
+  }
+}
+
+.cafe-card-hover {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.cafe-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 40px rgb(0 0 0 / 0.08),
+    0 8px 16px rgb(0 0 0 / 0.05);
+}
+
+/* ===== GLASS EFFECT ===== */
+
+.cafe-glass {
+  background: rgb(255 255 255 / 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ===== SOMBRAS ===== */
+
+.cafe-shadow {
+  box-shadow:
+    0 10px 25px rgb(0 0 0 / 0.06),
+    0 4px 10px rgb(0 0 0 / 0.04);
+}
+
+.cafe-shadow-lg {
+  box-shadow:
+    0 20px 40px rgb(0 0 0 / 0.10),
+    0 10px 20px rgb(0 0 0 / 0.06);
+}
+
+/* ===== ANIMACIONES ===== */
+
+.cafe-fade-in {
+  animation: cafeFadeIn 0.4s ease;
+}
+
+@keyframes cafeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== BADGES ===== */
+
+.cafe-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background: rgb(201 123 54 / 0.12);
+
+  padding: 0.55rem 1rem;
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--color-cafe-caramelo);
+}
+
+/* ===== TITULOS ===== */
+
+.cafe-title {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--color-cafe-oscuro);
+}
+
+.cafe-subtitle {
+  color: var(--color-cafe-oscuro);
+  line-height: 1.7;
+}
+.cafe-precio{
+  color: var(--color-cafe-caramelo);
+}
+
+/* ===== INPUTS ===== */
+
+.cafe-input {
+  width: 100%;
+
+  border-radius: 1rem;
+  border: 1px solid #e5d7ca;
+
+  background: white;
+
+  padding: 0.9rem 1rem;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.cafe-input:focus {
+  border-color: var(--color-cafe-caramelo);
+
+  box-shadow:
+    0 0 0 4px rgb(201 123 54 / 0.10);
+}
+
+/* ===== BOTONES ===== */
+
+.cafe-button-primary {
+  border-radius: 1rem;
+
+  background: var(--color-cafe-espresso);
+
+  padding: 0.95rem 1.4rem;
+
+  font-weight: 900;
+  color: white;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.cafe-button-primary:hover {
+  background: var(--color-cafe-chocolate);
+  transform: translateY(-2px);
+}
+
+.cafe-button-secondary {
+  border-radius: 1rem;
+
+  background: white;
+
+  padding: 0.9rem 1.2rem;
+
+  font-weight: 800;
+
+  color: var(--color-cafe-oscuro);
+
+  border: 1px solid #eadccf;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.cafe-button-secondary:hover {
+  background: #fffaf5;
+  border-color: #d9c1ad;
+}
