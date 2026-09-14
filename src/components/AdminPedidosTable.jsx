@@ -102,7 +102,7 @@ export default function AdminPedidosTable({
   }
 
   return (
-  <section className="max-w-7xl px-4 py-10 md:px-2 xl:px-2">
+  <section className="mx-auto max-w-10xl px-2 py-10 ">
     <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
      <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
         <button
@@ -156,7 +156,7 @@ export default function AdminPedidosTable({
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
                 <th className="w-[11%] p-2 sm:p-3 md:p-4">Tiempo</th>
-                <th className="whitespace-nowrap px-5 py-4">Accion</th>
+                <th className="w-[15%] p-2 sm:p-3 md:p-4">Accion</th>
             </tr>
           </thead>
 
