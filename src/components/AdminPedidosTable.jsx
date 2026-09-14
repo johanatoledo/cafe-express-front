@@ -102,7 +102,7 @@ export default function AdminPedidosTable({
   }
 
   return (
-  <section className="w-full px-4 py-8 md:px-2 xl:px-2">
+  <section className="max-w-7xl px-4 py-10 md:px-2 xl:px-2">
     <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
      <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
         <button
@@ -282,9 +282,9 @@ export default function AdminPedidosTable({
                         {productos.map((item, idx) => (
                           <li
                             key={idx}
-                            className="flex items-start gap-1.5 text-gray-800 font-medium"
+                            className="flex items-start gap-1.5 text-black font-medium"
                           >
-                            <span className="font-black text-black  px-1.5 py-0.5 rounded">
+                            <span className="font-black text-black  px-1.5 py-0.5 ">
                               {item.cantidad}
                             </span>
                             <span className="leading-tight">{item.nombre}</span>
