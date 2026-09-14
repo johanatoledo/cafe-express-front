@@ -102,7 +102,7 @@ export default function AdminPedidosTable({
   }
 
   return (
-  <section className="max-w-7xl px-4 py-10 md:px-2 xl:px-2">
+  <section className="mx-auto w-full max-w-[95%] xl:max-w-[98%] px-4 py-10 md:px-2 xl:px-2">
     <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
      <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
         <button
@@ -140,223 +140,224 @@ export default function AdminPedidosTable({
       </div>
 
       {/* Tabla principal */}
-    
-      <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
-       <div div className="w-full max-w-none overflow-hidden">
-        <table className="w-full table-fixed border-collapse text-left text-xs sm:text-sm">
-          <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
-            <tr>
-                <th className="w-[6%] p-2 sm:p-3 md:p-4">ID</th>
-                <th className="w-[11%] p-2 sm:p-3 md:p-4">Cliente</th>
-                <th className="w-[9%] p-2 sm:p-3 md:p-4">Tipo</th>
-                <th className="w-[14%] p-2 sm:p-3 md:p-4">Ubicación</th>
-                <th className="w-[20%] p-2 sm:p-3 md:p-4">Pedido</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Total</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
-                <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
-                <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Tiempo</th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-100">
-            {pedidosFiltrados.length === 0 && (
+      <div className="w-full bg-white">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-max border-collapse text-left text-xs sm:text-sm">
+            <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
               <tr>
-                <td
-                  colSpan="11"
-                  className="p-8 text-center font-bold text-gray-500"
-                >
-                  No existen pedidos para este filtro.
-                </td>
+                  <th className="w-[6%] p-2 sm:p-3 md:p-4">ID</th>
+                  <th className="w-[11%] p-2 sm:p-3 md:p-4">Cliente</th>
+                  <th className="w-[9%] p-2 sm:p-3 md:p-4">Tipo</th>
+                  <th className="w-[14%] p-2 sm:p-3 md:p-4">Ubicación</th>
+                  <th className="w-[20%] p-2 sm:p-3 md:p-4">Pedido</th>
+                  <th className="w-[8%] p-2 sm:p-3 md:p-4">Total</th>
+                  <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
+                  <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
+                  <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
+                  <th className="w-[8%] p-2 sm:p-3 md:p-4">Tiempo</th>
+                  {/* Nota: Tienes un <td> extra de 'Acciones' en el tbody, considera agregar el <th> aquí si falta */}
+                  <th className="p-2 sm:p-3 md:p-4 text-center">Acciones</th>
               </tr>
-            )}
+            </thead>
 
-            {pedidosFiltrados.map((pedido) => {
-              let productos = [];
-
-              try {
-                productos =
-                  typeof pedido.productos === "string"
-                    ? JSON.parse(pedido.productos)
-                    : pedido.productos || [];
-              } catch {
-                productos = [];
-              }
-
-              const esRestaurante = pedido.tipo_pedido === "restaurante";
-              function normalizarBooleano(valor) {
-                   return (
-                      valor === true ||
-                      valor === 1 ||
-                      valor === "1"
-                   );
-            }
-             const pagoVerificado = normalizarBooleano(
-             pedido.pago_verificado
-        );
-
-              const ubicacionActual =
-                ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
-
-              const estaProcesando = cargandoId === pedido.id;
-
-              return (
-                <tr
-                  key={pedido.id}
-                  className="hover:bg-amber-50/40 transition-colors"
-                >
-                  {/* Nro Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word   font-black text-gray-900">
-                    #{pedido.id}
-                  </td>
-
-                  {/* Cliente */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black uppercase text-gray-900 min-w-[130px]">
-                    {pedido.cliente_nombre}
-                  </td>
-
-                  {/* Tipo de Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 wrap-break-word ">
-                    <span
-                      className={`inline-block rounded-xl px-3 py-1 text-xs font-black uppercase ${
-                        esRestaurante
-                          ? " text-amber-800"
-                          : " text-purple-800"
-                      }`}
-                    >
-                      {esRestaurante ? "Restaurante" : "Para Llevar"}
-                    </span>
-                  </td>
-
-                  {/* Ubicación / Mesa */}
-              <td className="p-2 sm:p-3 md:p-4 wrap-break-word ">
-                {esRestaurante ? (
-                   pedido.ubicacion ? (
-                    <div className="flex flex-col gap-2">
-                      <span className="inline-flex items-center rounded-xl  px-3 py-2 text-xs font-black uppercase text-green-700">
-                         {pedido.ubicacion}
-                      </span>
-                    </div>
-                  ) : (
-                  <div className="flex flex-col gap-2">
-                    <input
-                      type="text"
-                      value={ubicacionActual}
-                      onChange={(e) =>
-                      setUbicaciones((prev) => ({
-                      ...prev,
-                      [pedido.id]: e.target.value,
-                     }))
-                    }
-                    placeholder="Ej: Mesa 4, Terraza"
-                    className="w-full rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-bold outline-none focus:border-amber-700"
-                  />
-
-                <button
-                 onClick={() =>
-                 onAsignarUbicacion(pedido.id, ubicacionActual)
-                 }
-                disabled={!ubicacionActual.trim()}
-                className={`rounded-xl px-3 py-1.5 text-xs font-black text-white transition ${
-                  ubicacionActual.trim()
-                  ? "bg-gray-800 hover:bg-black"
-                  : "cursor-not-allowed bg-gray-300"
-                }`}
-             >
-                Guardar Ubicación
-                </button>
-               </div>
-                )
-              ) : (
-              <span className="text-xs font-bold italic text-gray-500">
-               Recojo en Mostrador
-              </span>
-             )}
-            </td>
-            
-
-                  {/* Detalle del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm whitespace-normal">
-                    {productos.length > 0 ? (
-                      <ul className="space-y-1.5 text-xs">
-                        {productos.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-1.5 text-black font-medium"
-                          >
-                            <span className="font-black text-black  px-1.5 py-0.5 ">
-                              {item.cantidad}
-                            </span>
-                            <span className="leading-tight">{item.nombre}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="text-xs text-gray-400">Sin productos</span>
-                    )}
-                  </td>
-
-                  {/* Total */}
-                  <td className=" p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black text-red-600 whitespace-nowrap">
-                    S/ {Number(pedido.total || 0).toFixed(2)}
-                  </td>
-
-                  {/* Yape */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word font-mono font-bold text-gray-800">
-                    {pedido.yape_operacion || "—"}
-                  </td>
-
-                  {/* Estado del Pago */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word text-center">
-                    <PagoBadge pagoVerificado={pagoVerificado} />
-                  </td>
-
-                  {/* Estado del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top  text-center wrap-break-word">
-                    <EstadoBadge
-                      estado={pedido.estado}
-                      pagoVerificado={pagoVerificado}
-                    />
-                  </td>
-
-                  {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word">
-                    <TimerPedido
-                      pagoConfirmadoEn={pedido.pago_confirmado_en}
-                      pagoVerificado={pagoVerificado}
-                      estado={pedido.estado}
-                      compacto
-                    />
-                  </td>
-
-                  {/* Acciones */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word text-center">
-                    {pagoVerificado ? (
-                      <button
-                        disabled={estaProcesando}
-                        onClick={() => handleAccionEntregar(pedido.id)}
-                        className="w-full min-w-32.5 rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
-                      >
-                        {estaProcesando ? "Procesando..." : "Marcar Entregado"}
-                      </button>
-                    ) : (
-                      <button
-                        disabled={estaProcesando}
-                        onClick={() => handleAccionConfirmar(pedido.id)}
-                        className="w-full min-w-32.5 rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
-                      >
-                        {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
-                      </button>
-                    )}
+            <tbody className="divide-y divide-gray-100">
+              {pedidosFiltrados.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="11"
+                    className="p-8 text-center font-bold text-gray-500"
+                  >
+                    No existen pedidos para este filtro.
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              )}
+
+              {pedidosFiltrados.map((pedido) => {
+                let productos = [];
+
+                try {
+                  productos =
+                    typeof pedido.productos === "string"
+                      ? JSON.parse(pedido.productos)
+                      : pedido.productos || [];
+                } catch {
+                  productos = [];
+                }
+
+                const esRestaurante = pedido.tipo_pedido === "restaurante";
+                function normalizarBooleano(valor) {
+                     return (
+                        valor === true ||
+                        valor === 1 ||
+                        valor === "1"
+                     );
+                }
+                const pagoVerificado = normalizarBooleano(
+                pedido.pago_verificado
+                );
+
+                const ubicacionActual =
+                  ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
+
+                const estaProcesando = cargandoId === pedido.id;
+
+                return (
+                  <tr
+                    key={pedido.id}
+                    className="hover:bg-amber-50/40 transition-colors"
+                  >
+                    {/* Nro Pedido */}
+                    <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word   font-black text-gray-900">
+                      #{pedido.id}
+                    </td>
+
+                    {/* Cliente */}
+                    <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black uppercase text-gray-900 min-w-[130px]">
+                      {pedido.cliente_nombre}
+                    </td>
+
+                    {/* Tipo de Pedido */}
+                    <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word ">
+                      <span
+                        className={`inline-block rounded-xl px-3 py-1 text-xs font-black uppercase ${
+                          esRestaurante
+                            ? " text-cafe-espresso"
+                            : " text-cafe-chocolate"
+                        }`}
+                      >
+                        {esRestaurante ? "Restaurante" : "Para Llevar"}
+                      </span>
+                    </td>
+
+                    {/* Ubicación / Mesa */}
+                <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word ">
+                  {esRestaurante ? (
+                     pedido.ubicacion ? (
+                      <div className="flex flex-col gap-2">
+                        <span className="inline-flex items-center rounded-xl  px-3 py-2 text-xs font-black uppercase text-cafe-oscuro">
+                           {pedido.ubicacion}
+                        </span>
+                      </div>
+                    ) : (
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="text"
+                        value={ubicacionActual}
+                        onChange={(e) =>
+                        setUbicaciones((prev) => ({
+                        ...prev,
+                        [pedido.id]: e.target.value,
+                       }))
+                      }
+                        placeholder="Ej: Mesa 4, Terraza"
+                        className="w-full rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-bold outline-none focus:border-amber-700"
+                      />
+
+                    <button
+                     onClick={() =>
+                     onAsignarUbicacion(pedido.id, ubicacionActual)
+                     }
+                    disabled={!ubicacionActual.trim()}
+                    className={`rounded-xl px-3 py-1.5 text-xs font-black text-white transition ${
+                      ubicacionActual.trim()
+                      ? "bg-cafe-caramelo hover:bg-cafe-espresso"
+                      : "cursor-not-allowed bg-gray-300"
+                    }`}
+                 >
+                    Guardar Ubicación
+                    </button>
+                   </div>
+                    )
+                  ) : (
+                  <span className="text-xs font-bold italic text-cafe-chocolate">
+                   Recojo en Mostrador
+                  </span>
+                 )}
+                </td>
+                
+
+                    {/* Detalle del Pedido */}
+                    <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm whitespace-normal">
+                      {productos.length > 0 ? (
+                        <ul className="space-y-1.5 text-xs">
+                          {productos.map((item, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-1.5 text-black font-medium"
+                            >
+                              <span className="font-black text-black  px-1.5 py-0.5 ">
+                                {item.cantidad}
+                              </span>
+                              <span className="leading-tight">{item.nombre}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span className="text-xs text-cafe-chocolate">Sin productos</span>
+                      )}
+                    </td>
+
+                    {/* Total */}
+                    <td className=" p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black text-red-600 whitespace-nowrap">
+                      S/ {Number(pedido.total || 0).toFixed(2)}
+                    </td>
+
+                    {/* Yape */}
+                    <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word font-mono font-bold text-gray-800">
+                      {pedido.yape_operacion || "—"}
+                    </td>
+
+                    {/* Estado del Pago */}
+                    <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word text-center">
+                      <PagoBadge pagoVerificado={pagoVerificado} />
+                    </td>
+
+                    {/* Estado del Pedido */}
+                    <td className="p-2 sm:p-3 md:p-6 align-top  text-center wrap-break-word">
+                      <EstadoBadge
+                        estado={pedido.estado}
+                        pagoVerificado={pagoVerificado}
+                      />
+                    </td>
+
+                    {/* Tiempo / Cronómetro */}
+                    <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word">
+                      <TimerPedido
+                        pagoConfirmadoEn={pedido.pago_confirmado_en}
+                        pagoVerificado={pagoVerificado}
+                        estado={pedido.estado}
+                        compacto
+                      />
+                    </td>
+
+                    {/* Acciones */}
+                    <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word text-center">
+                      {pagoVerificado ? (
+                        <button
+                          disabled={estaProcesando}
+                          onClick={() => handleAccionEntregar(pedido.id)}
+                          className="w-full min-w-32.5 rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
+                        >
+                          {estaProcesando ? "Procesando..." : "Marcar Entregado"}
+                        </button>
+                      ) : (
+                        <button
+                          disabled={estaProcesando}
+                          onClick={() => handleAccionConfirmar(pedido.id)}
+                          className="w-full min-w-32.5 rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
+                        >
+                          {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>   
-     </div>
-    </section>
+    </div>
+  </section>
   );
 }
