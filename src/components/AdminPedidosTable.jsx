@@ -142,7 +142,7 @@ export default function AdminPedidosTable({
       {/* Tabla principal */}
     
       <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
-       <div div className="w-full max-w-none overflow-hidden">
+       <div div className="w-full max-w-none overflow-x-auto sm:overflow-x-auto md:overflow-hidden ">
         <table className="w-full table-fixed border-collapse text-left text-xs sm:text-sm">
           <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
             <tr>
@@ -156,6 +156,7 @@ export default function AdminPedidosTable({
                 <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
                 <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
                 <th className="w-[8%] p-2 sm:p-3 md:p-4">Tiempo</th>
+                <th className="w-[8%] p-2 sm:p-3 md:p-4">Accion</th>
             </tr>
           </thead>
 
