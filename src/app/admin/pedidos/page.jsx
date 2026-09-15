@@ -106,17 +106,23 @@ export default function AdminPedidosPage() {
       <Navbar />
 
       <section className="mx-auto max-w-10xl px-2 py-10">
-        <div className="mb-8 flex flex-col justify-between sm:justify-center gap-4 md:flex-row md:items-end">
-          <div>
-            <h1 className="min-w-0 text-2xl sm:text-3xl lg:text-4xl font-black  text-pedido-dark">
-              Panel de pedidos
-            </h1>
-          </div>
+  <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
-          <button onClick={cargarPedidos} className="cafe-button-add shrink-0 w-auto! min-w-0! rounded-xl px-3! py-2! text-xs! sm:px-5! sm:py-3! sm:text-sm!">
-            Actualizar
-          </button>
-        </div>
+    <div>
+      <h1 className="min-w-0 text-2xl font-black text-pedido-dark sm:text-3xl lg:text-4xl">
+        Panel de pedidos
+      </h1>
+    </div>
+
+    <button
+      onClick={cargarPedidos}
+      className=" cafe-button-add self-start w-fit! min-w-0! rounded-xl px-3! py-2! text-xs! md:self-auto sm:px-4! sm:py-2.5! sm:text-sm!"
+    >
+      Actualizar
+    </button>
+
+  </div>
+</section>
 
         {cargando ? (
           <p className="text-center font-black">Cargando pedidos...</p>
