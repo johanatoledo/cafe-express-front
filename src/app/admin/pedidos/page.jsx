@@ -108,12 +108,12 @@ export default function AdminPedidosPage() {
       <section className="mx-auto max-w-10xl px-2 py-10">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-4xl font-black text-pedido-dark">
+            <h1 className="min-w-0 text-2xl sm:text-3xl lg:text-4xl font-black  text-pedido-dark">
               Panel de pedidos
             </h1>
           </div>
 
-          <button onClick={cargarPedidos} className="cafe-button-add">
+          <button onClick={cargarPedidos} className="cafe-button-add shrink-0 w-auto! min-w-0! rounded-xl px-3! py-2! text-xs! sm:px-5! sm:py-3! sm:text-sm!">
             Actualizar
           </button>
         </div>
