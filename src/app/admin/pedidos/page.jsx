@@ -106,7 +106,7 @@ export default function AdminPedidosPage() {
       <Navbar />
 
       <section className="mx-auto max-w-10xl px-2 py-10">
-  <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+  <div className="mb-8 flex flex-col gap-4 md:flex-row sm:justify-center md:items-end md:justify-between">
 
     <div>
       <h1 className="min-w-0 text-2xl font-black text-pedido-dark sm:text-3xl lg:text-4xl">

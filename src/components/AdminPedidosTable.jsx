@@ -256,7 +256,7 @@ export default function AdminPedidosTable({
                   >
                     <div className="mb-4 flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-xs font-black uppercase text-gray-500">
+                        <p className="text-xs font-black uppercase text-cafe-oscuro">
                           Pedido #{pedido.id}
                         </p>
                         <h3 className="mt-1 text-base font-black uppercase leading-tight text-gray-900">
@@ -275,14 +275,14 @@ export default function AdminPedidosTable({
 
                     <div className="grid gap-3 text-sm">
                       <div>
-                        <p className="text-[11px] font-black uppercase text-gray-400">
+                        <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                           Ubicación
                         </p>
                         <div className="mt-1">{renderUbicacion(pedido, esRestaurante)}</div>
                       </div>
 
                       <div>
-                        <p className="text-[11px] font-black uppercase text-gray-400">
+                        <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                           Pedido
                         </p>
                         <div className="mt-1">
@@ -292,7 +292,7 @@ export default function AdminPedidosTable({
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <p className="text-[11px] font-black uppercase text-gray-400">
+                          <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                             Total
                           </p>
                           <p className="mt-1 text-sm font-black text-red-600">
@@ -301,7 +301,7 @@ export default function AdminPedidosTable({
                         </div>
 
                         <div>
-                          <p className="text-[11px] font-black uppercase text-gray-400">
+                          <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                             N° Operación
                           </p>
                           <p className="mt-1 break-words text-xs font-bold text-gray-800">
@@ -312,7 +312,7 @@ export default function AdminPedidosTable({
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <p className="text-[11px] font-black uppercase text-gray-400">
+                          <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                             Pago
                           </p>
                           <div className="mt-1">
@@ -321,7 +321,7 @@ export default function AdminPedidosTable({
                         </div>
 
                         <div>
-                          <p className="text-[11px] font-black uppercase text-gray-400">
+                          <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                             Estado
                           </p>
                           <div className="mt-1">
@@ -334,7 +334,7 @@ export default function AdminPedidosTable({
                       </div>
 
                       <div>
-                        <p className="text-[11px] font-black uppercase text-gray-400">
+                        <p className="text-[11px] font-black uppercase text-cafe-oscuro">
                           Tiempo
                         </p>
                         <div className="mt-1">
