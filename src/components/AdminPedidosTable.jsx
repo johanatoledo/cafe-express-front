@@ -218,7 +218,7 @@ export default function AdminPedidosTable({
             className={`rounded-xl px-4 py-2 text-sm font-black transition ${
               filtroTipo === "restaurante"
                 ? "bg-amber-700 text-white"
-                : "border bg-white text-gray-700 hover:bg-gray-100"
+                : "border  bg-white text-cafe-chocolate hover:bg-cafe-espresso hover:text-white"
             }`}
           >
             Restaurante ({totalRestaurante})
@@ -228,8 +228,8 @@ export default function AdminPedidosTable({
             onClick={() => setFiltroTipo("llevar")}
             className={`rounded-xl px-4 py-2 text-sm font-black transition ${
               filtroTipo === "llevar"
-                ? "bg-cafe-caramelo text-white"
-                : "border bg-white text-cafe-chocolate hover:bg-cafe-oscuro"
+                ? "bg-amber-700 text-white"
+                : "border bg-white text-cafe-chocolate hover:bg-cafe-espresso hover:text-white"
             }`}
           >
             Para llevar ({totalLlevar})
