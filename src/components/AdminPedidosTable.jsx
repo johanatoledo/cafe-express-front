@@ -207,17 +207,17 @@ export default function AdminPedidosTable({
                   className="hover:bg-amber-50/40 transition-colors"
                 >
                   {/* Nro Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word   font-black text-gray-900">
+                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs  font-black text-gray-900">
                     #{pedido.id}
                   </td>
 
                   {/* Cliente */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black uppercase text-gray-900 min-w-[130px]">
+                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-black uppercase text-gray-900 min-w-[130px]">
                     {pedido.cliente_nombre}
                   </td>
 
                   {/* Tipo de Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word ">
+                  <td className="p-2 sm:p-3 md:p-4 align-top  text-xs wrap-break-word ">
                     <span
                       className={`inline-block rounded-xl px-4 py-1 text-xs font-black uppercase ${
                         esRestaurante
@@ -285,10 +285,10 @@ export default function AdminPedidosTable({
                             key={idx}
                             className="flex items-start gap-1.5 text-black font-medium"
                           >
-                            <span className="font-black text-black  px-1.5 py-0.5 ">
+                            <span className="font-black text-black   px-1.5 py-0.5 ">
                               {item.cantidad}
                             </span>
-                            <span className="leading-tight">{item.nombre}</span>
+                            <span className="leading-tight  ">{item.nombre}</span>
                           </li>
                         ))}
                       </ul>
@@ -298,22 +298,22 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Total */}
-                  <td className=" p-2 sm:p-3 md:p-4 align-top wrap-break-word  font-black text-red-600 whitespace-nowrap">
+                  <td className=" p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-black text-red-600 whitespace-nowrap">
                     S/ {Number(pedido.total || 0).toFixed(2)}
                   </td>
 
                   {/* Yape */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word font-mono font-bold text-gray-800">
+                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-mono font-bold text-gray-800">
                     {pedido.yape_operacion || "—"}
                   </td>
 
                   {/* Estado del Pago */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word text-center">
+                  <td className="p-2 sm:p-3 md:p-4 align-top  text-xs wrap-break-word text-center">
                     <PagoBadge pagoVerificado={pagoVerificado} />
                   </td>
 
                   {/* Estado del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top  text-center wrap-break-word">
+                  <td className="p-2 sm:p-3 md:p-6 align-top  text-xs text-center wrap-break-word">
                     <EstadoBadge
                       estado={pedido.estado}
                       pagoVerificado={pagoVerificado}
@@ -321,7 +321,7 @@ export default function AdminPedidosTable({
                   </td>
 
                   {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top text-center whitespace-nowrap">
+                  <td className="p-2 sm:p-3 md:p-6 align-top text-center  text-xs whitespace-nowrap">
                     <TimerPedido
                       pagoConfirmadoEn={pedido.pago_confirmado_en}
                       pagoVerificado={pagoVerificado}
