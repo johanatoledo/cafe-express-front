@@ -1,10 +1,18 @@
 import "./globals.css";
 
-export const metadata = {
-  charset: "utf-8",
-  viewport: "width=device-width, initial-scale=1",  
-  title: "Cafe Express",
-  description: "Menú digital para cafeteria express",
+
+export const metadata = { 
+  title: "CAFE EXPRESS",
+  description: "Menu Cafe Express",
+  icons: {
+    icon: "/branding/logo.webp", 
+    shortcut: "/branding/logo.webp",
+    apple: "/branding/logo.webp", 
+  },
+};
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
