@@ -3,11 +3,23 @@
 import { useState } from "react";
 import TimerPedido from "./TimerPedido";
 
+function normalizarBooleano(valor) {
+  return valor === true || valor === 1 || valor === "1";
+}
+
+function obtenerProductos(productos) {
+  try {
+    return typeof productos === "string" ? JSON.parse(productos) : productos || [];
+  } catch {
+    return [];
+  }
+}
+
 function EstadoBadge({ estado, pagoVerificado }) {
   if (!pagoVerificado) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-xl bg-amber-100 px-3 py-1 text-xs font-black uppercase text-amber-800">
-        <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-black uppercase leading-none text-amber-800">
+        <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
         Pendiente
       </span>
     );
@@ -17,18 +29,16 @@ function EstadoBadge({ estado, pagoVerificado }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1 text-xs font-black uppercase ${
-        estaListo
-          ? "bg-green-100 text-green-700"
-          : "bg-blue-100 text-blue-700"
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-black uppercase leading-none ${
+        estaListo ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
       }`}
     >
       <span
-        className={`h-2 w-2 rounded-full ${
+        className={`h-1.5 w-1.5 rounded-full ${
           estaListo ? "bg-green-500" : "bg-blue-500 animate-ping"
         }`}
-      ></span>
-      {estado || "En Preparación"}
+      />
+      {estado || "En preparación"}
     </span>
   );
 }
@@ -36,14 +46,29 @@ function EstadoBadge({ estado, pagoVerificado }) {
 function PagoBadge({ pagoVerificado }) {
   return (
     <span
-      className={`inline-flex items-center rounded-xl px-3 py-1 text-xs font-black uppercase ${
-        pagoVerificado
-          ? "bg-green-100 text-green-700"
-          : "bg-red-100 text-red-700"
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-black uppercase leading-none ${
+        pagoVerificado ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
       }`}
     >
-      {pagoVerificado ? "Pago Verificado" : "Pago Pendiente"}
+      {pagoVerificado ? "Pago verificado" : "Pago pendiente"}
     </span>
+  );
+}
+
+function PedidoDetalle({ productos }) {
+  if (!productos.length) {
+    return <span className="text-xs text-cafe-chocolate">Sin productos</span>;
+  }
+
+  return (
+    <ul className="space-y-1.5">
+      {productos.map((item, idx) => (
+        <li key={idx} className="flex items-start gap-2 text-xs font-medium text-black">
+          <span className="shrink-0 font-black text-black">{item.cantidad}</span>
+          <span className="min-w-0 leading-tight">{item.nombre}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -90,274 +115,355 @@ export default function AdminPedidosTable({
 
   if (!pedidos.length) {
     return (
-      <div className="rounded-3xl bg-white p-10 text-center shadow-xl">
-        <p className="text-xl font-black text-gray-800">
+      <div className="rounded-3xl bg-white p-8 text-center shadow-xl sm:p-10">
+        <p className="text-lg font-black text-gray-800 sm:text-xl">
           No hay pedidos activos
         </p>
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 text-sm text-gray-500">
           Los nuevos pedidos aparecerán aquí automáticamente.
         </p>
       </div>
     );
   }
 
-  return (
-  <section className="mx-auto max-w-10xl px-2 py-10 ">
-    <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
-     <div className="flex w-full flex-wrap gap-3 border-b bg-gray-50 p-5">
-        <button
-          onClick={() => setFiltroTipo("todos")}
-          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
-            filtroTipo === "todos"
-              ? "bg-cafe-espresso text-white"
-              : "border bg-white text-black hover:bg-gray-100"
-          }`}
-        >
-          Todos ({pedidos.length})
-        </button>
+  const renderAccion = (pedido, pagoVerificado) => {
+    const estaProcesando = cargandoId === pedido.id;
+
+    return pagoVerificado ? (
+      <button
+        disabled={estaProcesando}
+        onClick={() => handleAccionEntregar(pedido.id)}
+        className="w-full rounded-xl bg-green-700 px-3 py-2 text-xs font-black leading-tight text-white shadow-sm transition hover:bg-green-800 disabled:opacity-50"
+      >
+        {estaProcesando ? "Procesando..." : "Marcar Entregado"}
+      </button>
+    ) : (
+      <button
+        disabled={estaProcesando}
+        onClick={() => handleAccionConfirmar(pedido.id)}
+        className="w-full rounded-xl bg-purple-700 px-3 py-2 text-xs font-black leading-tight text-white shadow-md transition hover:bg-purple-800 disabled:opacity-50"
+      >
+        {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
+      </button>
+    );
+  };
+
+  const renderUbicacion = (pedido, esRestaurante) => {
+    const ubicacionActual = ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
+
+    if (!esRestaurante) {
+      return (
+        <span className="text-xs font-black uppercase text-black">
+          Recojo en mostrador
+        </span>
+      );
+    }
+
+    if (pedido.ubicacion) {
+      return (
+        <span className="inline-flex rounded-xl px-2 py-1 text-xs font-black uppercase text-cafe-oscuro">
+          {pedido.ubicacion}
+        </span>
+      );
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        <input
+          type="text"
+          value={ubicacionActual}
+          onChange={(e) =>
+            setUbicaciones((prev) => ({
+              ...prev,
+              [pedido.id]: e.target.value,
+            }))
+          }
+          placeholder="Ej: Mesa 4"
+          className="w-full rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-bold outline-none focus:border-amber-700"
+        />
 
         <button
-          onClick={() => setFiltroTipo("restaurante")}
-          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
-            filtroTipo === "restaurante"
-              ? "bg-amber-700 text-white"
-              : "border bg-white text-gray-700 hover:bg-gray-100"
+          onClick={() => onAsignarUbicacion(pedido.id, ubicacionActual)}
+          disabled={!ubicacionActual.trim()}
+          className={`rounded-xl px-3 py-1.5 text-xs font-black text-white transition ${
+            ubicacionActual.trim()
+              ? "bg-cafe-caramelo hover:bg-cafe-espresso"
+              : "cursor-not-allowed bg-gray-300"
           }`}
         >
-          Restaurante ({totalRestaurante})
-        </button>
-
-        <button
-          onClick={() => setFiltroTipo("llevar")}
-          className={`rounded-xl px-4 py-2 text-sm font-black transition ${
-            filtroTipo === "llevar"
-              ? "bg-cafe-caramelo text-white"
-              : "border bg-white text-cafe-chocolate hover:bg-cafe-oscuro"
-          }`}
-        >
-          Para llevar ({totalLlevar})
+          Guardar ubicación
         </button>
       </div>
+    );
+  };
 
-      {/* Tabla principal */}
-    
+  return (
+    <section className="mx-auto w-full max-w-[1600px] px-3 py-6 sm:px-5 lg:px-6 xl:px-8">
       <div className="w-full overflow-hidden rounded-3xl bg-white shadow-xl">
-       <div div className="w-full max-w-none overflow-x-auto sm:overflow-x-auto md:overflow-hidden ">
-        <table className="w-full table-fixed border-collapse text-left text-xs sm:text-sm">
-          <thead className="bg-cafe-caramelo text-xs font-black uppercase text-white tracking-wider">
-            <tr>
-                <th className="w-[6%] p-2 sm:p-3 md:p-4">ID</th>
-                <th className="w-[11%] p-2 sm:p-3 md:p-4">Cliente</th>
-                <th className="w-[9%] p-2 sm:p-3 md:p-4">Tipo</th>
-                <th className="w-[14%] p-2 sm:p-3 md:p-4">Ubicación</th>
-                <th className="w-[20%] text-center p-2 sm:p-3 md:p-4">Pedido</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">Total</th>
-                <th className="w-[8%] p-2 sm:p-3 md:p-4">N OPER</th>
-                <th className="w-[9%] p-2 sm:p-3 md:p-4">Pago</th>
-                <th className="w-[7%] p-2 sm:p-3 md:p-4">Estado</th>
-                <th className="w-[20%] text-center p-2 sm:p-3 md:p-4">Tiempo</th>
-                <th className="w-[15%] text-center p-2 sm:p-3 md:p-4">Accion</th>
-            </tr>
-          </thead>
+        {/* Filtros */}
+        <div className="flex w-full flex-wrap gap-2 border-b bg-gray-50 p-4 sm:gap-3 sm:p-5">
+          <button
+            onClick={() => setFiltroTipo("todos")}
+            className={`rounded-xl px-4 py-2 text-sm font-black transition ${
+              filtroTipo === "todos"
+                ? "bg-cafe-espresso text-white"
+                : "border bg-white text-black hover:bg-gray-100"
+            }`}
+          >
+            Todos ({pedidos.length})
+          </button>
 
-          <tbody className="divide-y divide-black/80">
-            {pedidosFiltrados.length === 0 && (
-              <tr>
-                <td
-                  colSpan="11"
-                  className="p-8 text-center font-bold text-black"
-                >
-                  No existen pedidos para este filtro.
-                </td>
-              </tr>
-            )}
+          <button
+            onClick={() => setFiltroTipo("restaurante")}
+            className={`rounded-xl px-4 py-2 text-sm font-black transition ${
+              filtroTipo === "restaurante"
+                ? "bg-amber-700 text-white"
+                : "border bg-white text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Restaurante ({totalRestaurante})
+          </button>
 
-            {pedidosFiltrados.map((pedido) => {
-              let productos = [];
+          <button
+            onClick={() => setFiltroTipo("llevar")}
+            className={`rounded-xl px-4 py-2 text-sm font-black transition ${
+              filtroTipo === "llevar"
+                ? "bg-cafe-caramelo text-white"
+                : "border bg-white text-cafe-chocolate hover:bg-cafe-oscuro"
+            }`}
+          >
+            Para llevar ({totalLlevar})
+          </button>
+        </div>
 
-              try {
-                productos =
-                  typeof pedido.productos === "string"
-                    ? JSON.parse(pedido.productos)
-                    : pedido.productos || [];
-              } catch {
-                productos = [];
-              }
+        {pedidosFiltrados.length === 0 ? (
+          <div className="p-8 text-center text-sm font-black text-black">
+            No existen pedidos para este filtro.
+          </div>
+        ) : (
+          <>
+            {/* Vista móvil y tablet */}
+            <div className="grid gap-4 p-4 xl:hidden">
+              {pedidosFiltrados.map((pedido) => {
+                const productos = obtenerProductos(pedido.productos);
+                const esRestaurante = pedido.tipo_pedido === "restaurante";
+                const pagoVerificado = normalizarBooleano(pedido.pago_verificado);
 
-              const esRestaurante = pedido.tipo_pedido === "restaurante";
-              function normalizarBooleano(valor) {
-                   return (
-                      valor === true ||
-                      valor === 1 ||
-                      valor === "1"
-                   );
-            }
-             const pagoVerificado = normalizarBooleano(
-             pedido.pago_verificado
-        );
+                return (
+                  <article
+                    key={pedido.id}
+                    className="rounded-3xl border border-black/10 bg-white p-4 shadow-sm"
+                  >
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-black uppercase text-gray-500">
+                          Pedido #{pedido.id}
+                        </p>
+                        <h3 className="mt-1 text-base font-black uppercase leading-tight text-gray-900">
+                          {pedido.cliente_nombre}
+                        </h3>
+                      </div>
 
-              const ubicacionActual =
-                ubicaciones[pedido.id] ?? pedido.ubicacion ?? "";
-
-              const estaProcesando = cargandoId === pedido.id;
-
-              return (
-                <tr
-                  key={pedido.id}
-                  className="hover:bg-amber-50/40 transition-colors"
-                >
-                  {/* Nro Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs  font-black text-gray-900">
-                    #{pedido.id}
-                  </td>
-
-                  {/* Cliente */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-black uppercase text-gray-900 min-w-[130px]">
-                    {pedido.cliente_nombre}
-                  </td>
-
-                  {/* Tipo de Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top  text-xs wrap-break-word ">
-                    <span
-                      className={`inline-block rounded-xl px-4 py-1 text-xs font-black uppercase ${
-                        esRestaurante
-                          ? " text-amber-700"
-                          : " text-shadow-red-800"
-                      }`}
-                    >
-                      {esRestaurante ? "Restaurante" : "Para Llevar"}
-                    </span>
-                  </td>
-
-                  {/* Ubicación / Mesa */}
-              <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word ">
-                {esRestaurante ? (
-                   pedido.ubicacion ? (
-                    <div className="flex flex-col gap-2">
-                      <span className="inline-flex items-center rounded-xl  px-3 py-2 text-xs font-black uppercase text-cafe-oscuro">
-                         {pedido.ubicacion}
+                      <span
+                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-black uppercase ${
+                          esRestaurante ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {esRestaurante ? "Restaurante" : "Para llevar"}
                       </span>
                     </div>
-                  ) : (
-                  <div className="flex flex-col gap-2">
-                    <input
-                      type="text"
-                      value={ubicacionActual}
-                      onChange={(e) =>
-                      setUbicaciones((prev) => ({
-                      ...prev,
-                      [pedido.id]: e.target.value,
-                     }))
-                    }
-                    placeholder="Ej: Mesa 4, Terraza"
-                    className="w-full rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-bold outline-none focus:border-amber-700"
-                  />
 
-                <button
-                 onClick={() =>
-                 onAsignarUbicacion(pedido.id, ubicacionActual)
-                 }
-                disabled={!ubicacionActual.trim()}
-                className={`rounded-xl px-3 py-1.5 text-xs font-black text-white transition ${
-                  ubicacionActual.trim()
-                  ? "bg-cafe-caramelo hover:bg-cafe-espresso"
-                  : "cursor-not-allowed bg-gray-300"
-                }`}
-             >
-                Guardar Ubicación
-                </button>
-               </div>
-                )
-              ) : (
-              <span className="text-xs font-bold uppercase text-black">
-               Recojo en Mostrador
-              </span>
-             )}
-            </td>
-            
+                    <div className="grid gap-3 text-sm">
+                      <div>
+                        <p className="text-[11px] font-black uppercase text-gray-400">
+                          Ubicación
+                        </p>
+                        <div className="mt-1">{renderUbicacion(pedido, esRestaurante)}</div>
+                      </div>
 
-                  {/* Detalle del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm whitespace-normal">
-                    {productos.length > 0 ? (
-                      <ul className="space-y-1.5 text-xs">
-                        {productos.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-1.5 text-black font-medium"
+                      <div>
+                        <p className="text-[11px] font-black uppercase text-gray-400">
+                          Pedido
+                        </p>
+                        <div className="mt-1">
+                          <PedidoDetalle productos={productos} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-[11px] font-black uppercase text-gray-400">
+                            Total
+                          </p>
+                          <p className="mt-1 text-sm font-black text-red-600">
+                            S/ {Number(pedido.total || 0).toFixed(2)}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-[11px] font-black uppercase text-gray-400">
+                            N° Operación
+                          </p>
+                          <p className="mt-1 break-words text-xs font-bold text-gray-800">
+                            {pedido.yape_operacion || "—"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-[11px] font-black uppercase text-gray-400">
+                            Pago
+                          </p>
+                          <div className="mt-1">
+                            <PagoBadge pagoVerificado={pagoVerificado} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-[11px] font-black uppercase text-gray-400">
+                            Estado
+                          </p>
+                          <div className="mt-1">
+                            <EstadoBadge
+                              estado={pedido.estado}
+                              pagoVerificado={pagoVerificado}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-[11px] font-black uppercase text-gray-400">
+                          Tiempo
+                        </p>
+                        <div className="mt-1">
+                          <TimerPedido
+                            pagoConfirmadoEn={pedido.pago_confirmado_en}
+                            pagoVerificado={pagoVerificado}
+                            estado={pedido.estado}
+                            compacto
+                          />
+                        </div>
+                      </div>
+
+                      <div className="pt-2">{renderAccion(pedido, pagoVerificado)}</div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* Vista escritorio */}
+            <div className="hidden w-full xl:block">
+              <table className="w-full table-auto border-collapse text-left text-[11px] 2xl:text-xs">
+                <colgroup>
+                  <col className="w-[4%]" />
+                  <col className="w-[10%]" />
+                  <col className="w-[8%]" />
+                  <col className="w-[11%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[7%]" />
+                  <col className="w-[8%]" />
+                  <col className="w-[9%]" />
+                  <col className="w-[8%]" />
+                  <col className="w-[7%]" />
+                  <col className="w-[10%]" />
+                </colgroup>
+
+                <thead className="bg-cafe-caramelo font-black uppercase tracking-wider text-white">
+                  <tr>
+                    <th className="px-3 py-4">ID</th>
+                    <th className="px-3 py-4">Cliente</th>
+                    <th className="px-3 py-4">Tipo</th>
+                    <th className="px-3 py-4">Ubicación</th>
+                    <th className="px-3 py-4">Pedido</th>
+                    <th className="px-3 py-4">Total</th>
+                    <th className="px-3 py-4">N Oper</th>
+                    <th className="px-3 py-4 text-center">Pago</th>
+                    <th className="px-3 py-4 text-center">Estado</th>
+                    <th className="px-3 py-4 text-center">Tiempo</th>
+                    <th className="px-3 py-4 text-center">Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-black/30">
+                  {pedidosFiltrados.map((pedido) => {
+                    const productos = obtenerProductos(pedido.productos);
+                    const esRestaurante = pedido.tipo_pedido === "restaurante";
+                    const pagoVerificado = normalizarBooleano(pedido.pago_verificado);
+
+                    return (
+                      <tr
+                        key={pedido.id}
+                        className="align-top transition-colors hover:bg-amber-50/40"
+                      >
+                        <td className="px-3 py-4 font-black text-gray-900">
+                          #{pedido.id}
+                        </td>
+
+                        <td className="px-3 py-4 font-black uppercase leading-tight text-gray-900">
+                          {pedido.cliente_nombre}
+                        </td>
+
+                        <td className="px-3 py-4">
+                          <span
+                            className={`text-[10px] font-black uppercase leading-tight ${
+                              esRestaurante ? "text-amber-700" : "text-red-800"
+                            }`}
                           >
-                            <span className="font-black text-black   px-1.5 py-0.5 ">
-                              {item.cantidad}
-                            </span>
-                            <span className="leading-tight  ">{item.nombre}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="text-xs text-cafe-chocolate">Sin productos</span>
-                    )}
-                  </td>
+                            {esRestaurante ? "Restaurante" : "Para llevar"}
+                          </span>
+                        </td>
 
-                  {/* Total */}
-                  <td className=" p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-black text-red-600 whitespace-nowrap">
-                    S/ {Number(pedido.total || 0).toFixed(2)}
-                  </td>
+                        <td className="px-3 py-4">
+                          {renderUbicacion(pedido, esRestaurante)}
+                        </td>
 
-                  {/* Yape */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top wrap-break-word  text-xs font-mono font-bold text-gray-800">
-                    {pedido.yape_operacion || "—"}
-                  </td>
+                        <td className="px-3 py-4">
+                          <PedidoDetalle productos={productos} />
+                        </td>
 
-                  {/* Estado del Pago */}
-                  <td className="p-2 sm:p-3 md:p-4 align-top  text-xs wrap-break-word text-center">
-                    <PagoBadge pagoVerificado={pagoVerificado} />
-                  </td>
+                        <td className="px-3 py-4 font-black whitespace-nowrap text-red-600">
+                          S/ {Number(pedido.total || 0).toFixed(2)}
+                        </td>
 
-                  {/* Estado del Pedido */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top  text-xs text-center wrap-break-word">
-                    <EstadoBadge
-                      estado={pedido.estado}
-                      pagoVerificado={pagoVerificado}
-                    />
-                  </td>
+                        <td className="px-3 py-4 break-words font-mono font-bold text-gray-800">
+                          {pedido.yape_operacion || "—"}
+                        </td>
 
-                  {/* Tiempo / Cronómetro */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top text-center  text-xs whitespace-nowrap">
-                    <TimerPedido
-                      pagoConfirmadoEn={pedido.pago_confirmado_en}
-                      pagoVerificado={pagoVerificado}
-                      estado={pedido.estado}
-                      compacto
-                    />
-                  </td>
+                        <td className="px-3 py-4 text-center">
+                          <PagoBadge pagoVerificado={pagoVerificado} />
+                        </td>
 
-                  {/* Acciones */}
-                  <td className="p-2 sm:p-3 md:p-6 align-top wrap-break-word text-center">
-                    {pagoVerificado ? (
-                      <button
-                        disabled={estaProcesando}
-                        onClick={() => handleAccionEntregar(pedido.id)}
-                        className="w-full min-w-32.5 rounded-xl bg-green-700 px-3 py-2 text-xs font-black text-white hover:bg-green-800 transition shadow-sm disabled:opacity-50"
-                      >
-                        {estaProcesando ? "Procesando..." : "Marcar Entregado"}
-                      </button>
-                    ) : (
-                      <button
-                        disabled={estaProcesando}
-                        onClick={() => handleAccionConfirmar(pedido.id)}
-                        className="w-full min-w-32.5 rounded-xl bg-purple-700 px-3 py-2 text-xs font-black text-white hover:bg-purple-800 transition shadow-md animate-pulse disabled:opacity-50"
-                      >
-                        {estaProcesando ? "Confirmando..." : "Confirmar Pago"}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        <td className="px-3 py-4 text-center">
+                          <EstadoBadge
+                            estado={pedido.estado}
+                            pagoVerificado={pagoVerificado}
+                          />
+                        </td>
+
+                        <td className="px-3 py-4 text-center">
+                          <TimerPedido
+                            pagoConfirmadoEn={pedido.pago_confirmado_en}
+                            pagoVerificado={pagoVerificado}
+                            estado={pedido.estado}
+                            compacto
+                          />
+                        </td>
+
+                        <td className="px-3 py-4 text-center">
+                          {renderAccion(pedido, pagoVerificado)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </div>
-      </div>   
-     </div>
     </section>
   );
 }
