@@ -114,15 +114,15 @@ export default function AdminPedidosPage() {
       </h1>
     </div>
 
-    <button
-      onClick={cargarPedidos}
-      className=" cafe-button-add self-start w-fit! min-w-0! rounded-xl px-3! py-2! text-xs! md:self-auto sm:px-4! sm:py-2.5! sm:text-sm!"
-    >
-      Actualizar
-    </button>
+     <button
+       onClick={cargarPedidos}
+       className=" cafe-button-add self-start w-fit! min-w-0! rounded-xl px-3! py-2! text-xs! md:self-auto sm:px-4! sm:py-2.5! sm:text-sm!"
+      >
+       Actualizar
+     </button>
 
-  </div>
-</section>
+   </div>
+
 
         {cargando ? (
           <p className="text-center font-black">Cargando pedidos...</p>
