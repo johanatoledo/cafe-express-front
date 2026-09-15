@@ -106,7 +106,7 @@ export default function AdminPedidosPage() {
       <Navbar />
 
       <section className="mx-auto max-w-10xl px-2 py-10">
-        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div className="mb-8 flex flex-col justify-between sm:justify-center gap-4 md:flex-row md:items-end">
           <div>
             <h1 className="min-w-0 text-2xl sm:text-3xl lg:text-4xl font-black  text-pedido-dark">
               Panel de pedidos
